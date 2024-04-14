@@ -3,15 +3,16 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Models\Kelas;
+use App\Models\Sekolah;
 use App\Models\User;
-use App\Providers\RouteServiceProvider;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rules;
 use Illuminate\View\View;
+use RealRashid\SweetAlert\Facades\Alert;
 
 class RegisteredUserController extends Controller
 {
@@ -20,7 +21,9 @@ class RegisteredUserController extends Controller
      */
     public function create(): View
     {
-        return view('auth.register');
+        $dataSekolah = Sekolah::all();
+        $dataKelas = Kelas::all();
+        return view('pages.auth.register', compact('dataSekolah', 'dataKelas'));
     }
 
     /**
@@ -30,22 +33,65 @@ class RegisteredUserController extends Controller
      */
     public function store(Request $request): RedirectResponse
     {
-        $request->validate([
-            'name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:'.User::class],
-            'password' => ['required', 'confirmed', Rules\Password::defaults()],
-        ]);
+        if ($request->password != $request->password_confirmation) {
+            Alert::error('Error', 'Password confirmation does not match!');
+            return redirect()->back()->withInput();
+        }
+        if ($request->role == 'admin') {
+            $validator = Validator::make($request->all(), [
+                'name' => ['required', 'string', 'max:255'],
+                'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:' . User::class],
+                'password' => ['required', 'confirmed', Rules\Password::defaults()],
+                'sekolah' => ['required'],
+            ]);
+        } elseif ($request->role == 'guru') {
+            $validator = Validator::make($request->all(), [
+                'name' => ['required', 'string', 'max:255'],
+                'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:' . User::class],
+                'password' => ['required', 'confirmed', Rules\Password::defaults()],
+                'sekolah_id' => ['required'],
+            ]);
+        } else {
+            $validator = Validator::make($request->all(), [
+                'name' => ['required', 'string', 'max:255'],
+                'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:' . User::class],
+                'password' => ['required', 'confirmed', Rules\Password::defaults()],
+                'sekolah_id' => ['required'],
+            ]);
+        }
+
+        if ($validator->fails()) {
+            Alert::error('Error', $validator->errors()->first());
+            return redirect()->back()->withInput();
+        }
 
         $user = User::create([
             'name' => $request->name,
             'email' => $request->email,
-            'password' => Hash::make($request->password),
+            'password' => bcrypt($request->password),
+            'role' => $request->role,
         ]);
 
+        if ($request->role == 'guru') {
+            $user->guru()->create([
+                'sekolah_id' => $request->sekolah_id,
+            ]);
+        } elseif ($request->role == 'admin') {
+            Sekolah::create([
+                'nama' => $request->sekolah,
+            ]);
+            $user->admin()->create([
+                'sekolah_id' => Sekolah::latest()->first()->id,
+            ]);
+        } else {
+            $user->siswa()->create([
+                'sekolah_id' => $request->sekolah_id,
+                'kelas_id' => $request->kelas_id,
+            ]);
+        }
+
         event(new Registered($user));
-
-        Auth::login($user);
-
-        return redirect(RouteServiceProvider::HOME);
+        Alert::success('Success', 'Registration successful! Please login to continue.');
+        return redirect()->route('login')->with('success', 'Registration successful! Please login to continue.');
     }
 }
