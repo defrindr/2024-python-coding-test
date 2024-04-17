@@ -110,7 +110,7 @@
     </header>
     <nav class="main-sidebar ps-menu">
       <div class="sidebar-header">
-        <div class="text fs-2">CE</div>
+        <div class="text fs-2">CODEASY</div>
         <div class="close-sidebar action-toggle">
           <i class="ti-close"></i>
         </div>
@@ -130,10 +130,7 @@
     </main>
 
     <footer>
-      Copyright © 2022 &nbsp
-      <a href="https://www.youtube.com/c/mulaidarinull" target="_blank" class="ml-1">
-        Mulai Dari Null
-      </a>
+      Copyright © 2024 selpu-v.2
       <span> . All rights Reserved</span>
     </footer>
     <div class="overlay action-toggle"></div>
