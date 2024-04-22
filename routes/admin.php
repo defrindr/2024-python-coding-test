@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\CourseController;
 use App\Http\Controllers\GuruController;
 use App\Http\Controllers\KelasController;
 use App\Http\Controllers\ProfileController;
@@ -22,6 +23,13 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
         return view('pages.dashboard.admin-dashboard');
     })->name('dashboard.admin');
 
+    Route::get('admin/guru', [GuruController::class, 'index'])->name('admin.guru.index');
+    Route::get('admin/guru/create', [GuruController::class, 'create'])->name('admin.guru.create');
+    Route::post('admin/guru', [GuruController::class, 'store'])->name('admin.guru.store');
+    Route::get('admin/guru/{guru}/edit', [GuruController::class, 'edit'])->name('admin.guru.edit');
+    Route::patch('admin/guru/{guru}', [GuruController::class, 'update'])->name('admin.guru.update');
+    Route::delete('admin/guru/{guru}', [GuruController::class, 'destroy'])->name('admin.guru.destroy');
+
     Route::get('/admin/kelas', [KelasController::class, 'index'])->name('admin.kelas.index');
     Route::get('/admin/kelas/create', [KelasController::class, 'create'])->name('admin.kelas.create');
     Route::post('/admin/kelas', [KelasController::class, 'store'])->name('admin.kelas.store');
@@ -29,12 +37,11 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::patch('/admin/kelas/{kelas}', [KelasController::class, 'update'])->name('admin.kelas.update');
     Route::delete('/admin/kelas/{kelas}', [KelasController::class, 'destroy'])->name('admin.kelas.destroy');
 
-    Route::get('admin/guru', [GuruController::class, 'index'])->name('admin.guru.index');
-    Route::get('admin/guru/create', [GuruController::class, 'create'])->name('admin.guru.create');
-    Route::post('admin/guru', [GuruController::class, 'store'])->name('admin.guru.store');
-    Route::get('admin/guru/{guru}/edit', [GuruController::class, 'edit'])->name('admin.guru.edit');
-    Route::patch('admin/guru/{guru}', [GuruController::class, 'update'])->name('admin.guru.update');
-    Route::delete('admin/guru/{guru}', [GuruController::class, 'destroy'])->name('admin.guru.destroy');
+    Route::prefix('/admin/course')->group(function () {
+        Route::get('/', [CourseController::class, 'adminIndex'])->name('admin.course.index');
+        Route::get('/create', [CourseController::class, 'createTakeCourse'])->name('admin.course.create');
+        Route::post('/', [CourseController::class, 'storeTakeCourse'])->name('admin.course.store');
+    });
 
     Route::patch('/admin/profile/sekolah', [ProfileController::class, 'updateSekolah'])->name('profile.updateSekolah');
 });

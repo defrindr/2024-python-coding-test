@@ -36,4 +36,9 @@ class Sekolah extends Model
     {
         return $this->hasMany(Siswa::class, 'sekolah_id', 'id');
     }
+
+    public function course()
+    {
+        return $this->belongsToMany(Course::class, 'sekolah_course', 'sekolah_id', 'course_id');
+    }
 }

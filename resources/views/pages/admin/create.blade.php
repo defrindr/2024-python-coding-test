@@ -14,14 +14,13 @@
             <h4>Form Tambah Admin</h4>
           </div>
           <div class="card-body">
-            <form method="POST" action="{{ route('admin.store') }}"
-              class="form-horizontal d-flex flex-column gap-3">
+            <form method="POST" action="{{ route('admin.store') }}" class="form-horizontal d-flex flex-column gap-3">
               @csrf
               <div class="form-group">
                 <label for="name" class="mb-1 control-label">Nama Admin</label>
                 <div class="col-sm-12">
-                  <input type="text" class="form-control" id="name" name="name"
-                    placeholder="Nama Admin" value="{{ old('name') }}" required />
+                  <input type="text" class="form-control" id="name" name="name" placeholder="Nama Admin"
+                    value="{{ old('name') }}" required />
                 </div>
               </div>
 
@@ -36,8 +35,8 @@
               <div class="form-group">
                 <label for="password" class="mb-1 control-label">Password</label>
                 <div class="col-sm-12">
-                  <input type="password" class="form-control" id="password" name="password"
-                    placeholder="Password" value="{{ old('password') }}" required />
+                  <input type="password" class="form-control" id="password" name="password" placeholder="Password"
+                    value="{{ old('password') }}" required />
                 </div>
               </div>
 
@@ -55,8 +54,7 @@
                   <select class="form-select" id="sekolah_id" name="sekolah_id" required>
                     <option value="">Pilih Asal Sekolah</option>
                     @foreach ($dataSekolah as $item)
-                      <option value="{{ $item->id }}"
-                        {{ old('sekolah_id') == $item->id ? 'selected' : '' }}>
+                      <option value="{{ $item->id }}" {{ old('sekolah_id') == $item->id ? 'selected' : '' }}>
                         {{ $item->nama }}
                       </option>
                     @endforeach

@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\CourseController;
 use App\Http\Controllers\GuruController;
 use App\Http\Controllers\KelasController;
 use App\Http\Controllers\SekolahController;
@@ -72,5 +73,15 @@ Route::middleware(['auth', 'role:super_admin'])->group(function () {
         Route::get('/{siswa}/edit', [SiswaController::class, 'edit'])->name('siswa.edit');
         Route::patch('/{siswa}', [SiswaController::class, 'update'])->name('siswa.update');
         Route::delete('/{siswa}', [SiswaController::class, 'destroy'])->name('siswa.destroy');
+    });
+
+    Route::prefix('/course')->group(function () {
+        Route::get('/', [CourseController::class, 'index'])->name('course.index');
+        Route::get('/create', [CourseController::class, 'create'])->name('course.create');
+        Route::post('/', [CourseController::class, 'store'])->name('course.store');
+        Route::get('/{course}', [CourseController::class, 'show'])->name('course.show');
+        Route::get('/{course}/edit', [CourseController::class, 'edit'])->name('course.edit');
+        Route::patch('/{course}', [CourseController::class, 'update'])->name('course.update');
+        Route::delete('/{course}', [CourseController::class, 'destroy'])->name('course.destroy');
     });
 });
