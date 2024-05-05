@@ -3,8 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Models\Course;
-use App\Models\Guru;
-use App\Models\Sekolah;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
@@ -77,7 +75,7 @@ class CourseController extends Controller
                 'description' => $request->description,
             ]);
 
-            Alert::success('Success', 'Course created successfully');
+            Alert::success('Success', 'Course berhasil ditambahkan');
             return redirect()->route('course.index');
         } catch (\Throwable $th) {
             Alert::error('Error', $th->getMessage());
@@ -122,7 +120,7 @@ class CourseController extends Controller
                 'description' => $request->description,
             ]);
 
-            Alert::success('Success', 'Course updated successfully');
+            Alert::success('Success', 'Course berhasil diupdate');
             return redirect()->route('course.index');
         } catch (\Throwable $th) {
             Alert::error('Error', $th->getMessage());
@@ -137,7 +135,7 @@ class CourseController extends Controller
     {
         try {
             $course->delete();
-            Alert::success('Success', 'Course deleted successfully');
+            Alert::success('Success', 'Course berhasil dihapus');
             return redirect()->route('course.index');
         } catch (\Throwable $th) {
             Alert::error('Error', $th->getMessage());

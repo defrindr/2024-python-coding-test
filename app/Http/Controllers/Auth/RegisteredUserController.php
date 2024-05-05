@@ -94,8 +94,8 @@ class RegisteredUserController extends Controller
         }
 
         event(new Registered($user));
-        Alert::success('Success', 'Registration successful! Please login to continue.');
+        Alert::success('Success', 'Registrasi berhasil! Silahkan login untuk melanjutkan.');
         auth()->logout(); // Logout the user
-        return redirect()->route('login')->with('success', 'Registration successful! Please login to continue.');
+        return redirect()->route('login')->with('success', 'Registrasi berhasil! Silahkan login untuk melanjutkan.');
     }
 }

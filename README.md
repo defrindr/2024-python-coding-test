@@ -9,7 +9,12 @@
 
 ## ToDo
 
--   [] Ambil course admin sekolah
+-   [x] Ambil course admin sekolah
+-   [x] Sekolah Course Siswa
+-   [x] Sekolah Course Guru
+-   [x] Sekolah Course Super Admin
+-   [ ] Chart Course Siswa
+-   [ ] Chart Course Super Admin
 
 ## License
 

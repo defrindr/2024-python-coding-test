@@ -42,9 +42,6 @@
         <li>
           <a href="{{ route('course.index') }}" class="link"> <span>Course</span></a>
         </li>
-        <li>
-          <a href="form-datepicker.html" class="link"> <span>Modul</span></a>
-        </li>
       </ul>
     </li>
     <li>

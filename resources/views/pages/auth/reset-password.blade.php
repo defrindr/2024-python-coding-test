@@ -11,15 +11,15 @@
           <div class="mb-3">
             <label class="mb-2 text-muted" for="email">E-Mail Address</label>
             <div class="input-group input-group-join mb-3">
-              <input readonly id="email" type="email" placeholder="Enter Email" class="form-control" name="email"
-                required autofocus autocomplete="username" value="{{ old('email', $request->email) }}" />
+              <input readonly id="email" type="email" placeholder="Masukan Email" class="form-control"
+                name="email" required autofocus autocomplete="username" value="{{ old('email', $request->email) }}" />
               <span class="input-group-text rounded-end">&nbsp<i class="fa fa-envelope"></i>&nbsp</span>
               <x-input-error :messages="$errors->get('email')" for="email" class="mt-2" />
             </div>
           </div>
 
           <div class="mb-3">
-            <label class="mb-2 text-muted" for="name">Full Name</label>
+            <label class="mb-2 text-muted" for="name">Nama Lengkap</label>
             <div class="input-group input-group-join mb-3">
               <input readonly type="text" id="name" class="form-control" placeholder="Enter Your Name"
                 name="name" required autocomplete="name" value="{{ old('name', $dataUser->name) }}" />
@@ -51,7 +51,7 @@
           </div>
 
           <div class="mb-3">
-            <label class="mb-2 text-muted" for="password_confirmation">Confirm Password</label>
+            <label class="mb-2 text-muted" for="password_confirmation">Konfimasi Password</label>
             <div class="input-group input-group-join mb-3">
               <input type="password" id="password_confirmation" class="form-control" placeholder="Confirm Your Password"
                 name="password_confirmation" required autocomplete="current-password" />
@@ -69,8 +69,8 @@
       </div>
       <div class="card-footer py-3 border-0">
         <div class="text-center">
-          Don't have an account yet?
-          <a href="{{ route('register') }}" class="text-dark">Create an account</a>
+          Belum memiliki akun?
+          <a href="{{ route('register') }}" class="text-dark">Register</a>
         </div>
       </div>
     </div>

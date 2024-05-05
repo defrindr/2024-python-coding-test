@@ -6,13 +6,14 @@
       <div class="col-md-12">
         <div class="card">
           <div class="card-header d-flex justify-content-between align-items-center">
-            <h4>List Data Course untuk guru {{ Auth::user()->name }}</h4>
+            <h4>List Data Course</h4>
           </div>
           <div class="card-body table-responsive">
             <table class="table table-bordered data-table">
               <thead>
                 <tr>
-                  <th>No</th>
+                  <th width="24px">No</th>
+                  <th>Nama Guru</th>
                   <th>Nama Course</th>
                   <th>Deskripsi</th>
                   <th width="280px">Action</th>
@@ -31,10 +32,14 @@
       const table = $('.data-table').DataTable({
         processing: true,
         serverSide: true,
-        ajax: "{{ route('guru.course.index') }}",
+        ajax: "{{ route('siswa.course.index') }}",
         columns: [{
             data: 'DT_RowIndex',
             name: 'DT_RowIndex'
+          },
+          {
+            data: 'guru.user.name',
+            name: 'guru.user.name'
           },
           {
             data: 'course.name',

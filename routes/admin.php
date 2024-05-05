@@ -3,7 +3,7 @@
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\GuruController;
 use App\Http\Controllers\ProfileController;
-use App\Http\Controllers\SekolahCourseController;
+use App\Http\Controllers\SekolahCourse\AdminController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -27,12 +27,13 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::patch('admin/guru/{guru}', [GuruController::class, 'update'])->name('admin.guru.update');
     Route::delete('admin/guru/{guru}', [GuruController::class, 'destroy'])->name('admin.guru.destroy');
 
-    Route::get('/admin/course', [SekolahCourseController::class, 'index'])->name('admin.course.index');
-    Route::get('/admin/course/create', [SekolahCourseController::class, 'create'])->name('admin.course.create');
-    Route::post('/admin/course', [SekolahCourseController::class, 'store'])->name('admin.course.store');
-    Route::get('/admin/course/{sekolahCourse}/edit', [SekolahCourseController::class, 'edit'])->name('admin.course.edit');
-    Route::patch('/admin/course/{sekolahCourse}', [SekolahCourseController::class, 'update'])->name('admin.course.update');
-    Route::delete('/admin/course/{sekolahCourse}', [SekolahCourseController::class, 'destroy'])->name('admin.course.destroy');
+    Route::get('/admin/course', [AdminController::class, 'index'])->name('admin.course.index');
+    Route::get('/admin/course/create', [AdminController::class, 'create'])->name('admin.course.create');
+    Route::post('/admin/course', [AdminController::class, 'store'])->name('admin.course.store');
+    Route::get('/admin/course/{sekolahCourse}', [AdminController::class, 'show'])->name('admin.course.show');
+    Route::get('/admin/course/{sekolahCourse}/edit', [AdminController::class, 'edit'])->name('admin.course.edit');
+    Route::patch('/admin/course/{sekolahCourse}', [AdminController::class, 'update'])->name('admin.course.update');
+    Route::delete('/admin/course/{sekolahCourse}', [AdminController::class, 'destroy'])->name('admin.course.destroy');
 
     Route::patch('/admin/profile/sekolah', [ProfileController::class, 'updateSekolah'])->name('profile.updateSekolah');
 });

@@ -27,21 +27,39 @@
             <hr class="my-0">
             <div class="d-flex gap-3">
               <h6 class="my-auto">Asal Sekolah</h6>
-              <span class="my-auto">
-                {{ $dataUser->sekolah->nama }}
-              </span>
+              @if ($dataUser == null)
+                <span class="my-auto">
+                  -
+                </span>
+              @else
+                <span class="my-auto">
+                  {{ $dataUser->sekolah->nama }}
+                </span>
+              @endif
             </div>
             <div class="d-flex gap-3">
               <h6 class="my-auto">NIS</h6>
-              <span class="my-auto">
-                {{ $dataUser->nis }}
-              </span>
+              @if ($dataUser == null)
+                <span class="my-auto">
+                  -
+                </span>
+              @else
+                <span class="my-auto">
+                  {{ $dataUser->nis }}
+                </span>
+              @endif
             </div>
             <div class="d-flex gap-3">
               <h6 class="my-auto">Kelas</h6>
-              <span class="my-auto">
-                {{ $dataUser->kelas->nama_kelas }}
-              </span>
+              @if ($dataUser == null)
+                <span class="my-auto">
+                  -
+                </span>
+              @else
+                <span class="my-auto">
+                  {{ $dataUser->kelas->nama_kelas }}
+                </span>
+              @endif
             </div>
           </div>
         </div>

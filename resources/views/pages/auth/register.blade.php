@@ -4,13 +4,13 @@
     <div class="card shadow-lg">
       <div class="card-body p-4">
         <h1 class="fs-4 text-center fw-bold mb-4">Register</h1>
-        <h1 class="fs-6 mb-3">Register to get more benefits!!</h1>
+        <h1 class="fs-6 mb-3">Daftar untuk mendapatkan manfaat lebih banyak!!</h1>
         <form method="POST" action="{{ route('register') }}" class="needs-validation">
           @csrf
           <div class="mb-3">
-            <label class="mb-2 text-muted" for="name">Full Name</label>
+            <label class="mb-2 text-muted" for="name">Nama Lengkap</label>
             <div class="input-group input-group-join mb-3">
-              <input type="text" placeholder="Enter Your Name" id="name" class="form-control" name="name"
+              <input type="text" placeholder="Masukkan Nama Anda" id="name" class="form-control" name="name"
                 required autofocus autocomplete="name">
               <span class="input-group-text rounded-end">&nbsp<i class="fa fa-user"></i>&nbsp</span>
             </div>
@@ -18,8 +18,8 @@
           <div class="mb-3">
             <label class="mb-2 text-muted" for="email">E-Mail Address</label>
             <div class="input-group input-group-join mb-3">
-              <input id="email" type="email" placeholder="Enter Email" class="form-control" name="email" required
-                autofocus autocomplete="username">
+              <input id="email" type="email" placeholder="Masukkan Email" class="form-control" name="email"
+                required autofocus autocomplete="username">
               <span class="input-group-text rounded-end">&nbsp<i class="fa fa-envelope"></i>&nbsp</span>
             </div>
           </div>
@@ -29,7 +29,7 @@
               <label class="text-muted" for="password">Password</label>
             </div>
             <div class="input-group input-group-join mb-3">
-              <input type="password" class="form-control" id="password" placeholder="Your password" name="password"
+              <input type="password" class="form-control" id="password" placeholder="Password Anda" name="password"
                 required>
               <span class="input-group-text rounded-end password cursor-pointer">
                 &nbsp<i id="eye-1" class="fa fa-eye"></i>&nbsp
@@ -38,11 +38,11 @@
           </div>
           <div class="mb-3">
             <div class="mb-2 w-100">
-              <label class="text-muted" for="password">Confirm Password</label>
+              <label class="text-muted" for="password">Konfirmasi Password</label>
             </div>
             <div class="input-group input-group-join mb-3">
-              <input type="password" class="form-control" id="password_confirmation" placeholder="Confirm Your Password"
-                name="password_confirmation" required>
+              <input type="password" class="form-control" id="password_confirmation"
+                placeholder="Konfirmasi Password Anda" name="password_confirmation" required>
               <span class="input-group-text rounded-end password cursor-pointer">
                 &nbsp
                 <i id="eye-2" class="fa fa-eye"></i>&nbsp
@@ -115,7 +115,7 @@
       </div>
       <div class="card-footer py-3 border-0">
         <div class="text-center">
-          Already have an account? <a href="{{ route('login') }}" class="text-dark">Login Now</a>
+          Sudah memiliki akun? <a href="{{ route('login') }}" class="text-dark">Login</a>
         </div>
       </div>
     </div>
@@ -160,7 +160,9 @@
           adminForm.addClass('d-flex').removeClass('d-none');
           sekolahInput.addClass('d-none').removeClass('d-block');
           kelasInput.addClass('d-none').removeClass('d-block');
+          nisInput.addClass('d-none').removeClass('d-block');
           sekolah.attr('required', true);
+          nisId.attr('required', false);
         } else {
           if (role.val() === 'siswa') {
             kelasInput.addClass('d-block').removeClass('d-none');
