@@ -4,37 +4,20 @@ namespace App\Http\Controllers;
 
 use App\Models\Course;
 use App\Models\Guru;
-use App\Models\Sekolah;
+use App\Models\SekolahCourse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 use RealRashid\SweetAlert\Facades\Alert;
 
-class CourseController extends Controller
+class SekolahCourseController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index(Request $request)
     {
-        $data = Course::latest()->get();
-        if ($request->ajax()) {
-            return datatables()->of($data)
-                ->addIndexColumn()
-                ->addColumn('action', function ($row) {
-                    return view('pages.course.actions', compact('row'));
-                })
-                ->rawColumns(['action'])
-                ->make(true);
-        }
-
-        return view('pages.course.index');
-    }
-
-    public function adminIndex(Request $request)
-    {
-        // get data from pivot table sekolah_course
-        $data = Course::with('sekolah')->where('id', Auth::user()->sekolah_id)->latest()->get();
+        $data = SekolahCourse::with('sekolah', 'course', 'guru.user')->where('sekolah_id', Auth::user()->admin->sekolah_id)->latest()->get();
         if ($request->ajax()) {
             return datatables()->of($data)
                 ->addIndexColumn()
@@ -53,7 +36,9 @@ class CourseController extends Controller
      */
     public function create()
     {
-        return view('pages.course.create');
+        $courses = Course::get();
+        $guru = Guru::with('user')->where('sekolah_id', Auth::user()->admin->sekolah_id)->get();
+        return view('pages.admin_course.create', compact('courses', 'guru'));
     }
 
     /**
@@ -63,8 +48,8 @@ class CourseController extends Controller
     {
         try {
             $validator = Validator::make($request->all(), [
-                'name' => 'required',
-                'description' => 'required',
+                'course_id' => 'required',
+                'guru_id' => 'required'
             ]);
 
             if ($validator->fails()) {
@@ -72,13 +57,14 @@ class CourseController extends Controller
                 return redirect()->back()->withInput();
             }
 
-            Course::create([
-                'name' => $request->name,
-                'description' => $request->description,
+            SekolahCourse::create([
+                'sekolah_id' => Auth::user()->admin->sekolah_id,
+                'course_id' => $request->course_id,
+                'guru_id' => $request->guru_id
             ]);
 
-            Alert::success('Success', 'Course created successfully');
-            return redirect()->route('course.index');
+            Alert::success('Success', 'Course added successfully');
+            return redirect()->route('admin.course.index');
         } catch (\Throwable $th) {
             Alert::error('Error', $th->getMessage());
             return redirect()->back()->withInput();
@@ -88,7 +74,7 @@ class CourseController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Course $course)
+    public function show(SekolahCourse $sekolahCourse)
     {
         //
     }
@@ -96,20 +82,22 @@ class CourseController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Course $course)
+    public function edit(SekolahCourse $sekolahCourse)
     {
-        return view('pages.course.edit', compact('course'));
+        $courses = Course::get();
+        $guru = Guru::with('user')->where('sekolah_id', Auth::user()->admin->sekolah_id)->get();
+        return view('pages.admin_course.edit', compact('courses', 'sekolahCourse', 'guru'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Course $course)
+    public function update(Request $request, SekolahCourse $sekolahCourse)
     {
         try {
             $validator = Validator::make($request->all(), [
-                'name' => 'required',
-                'description' => 'required',
+                'course_id' => 'required',
+                'guru_id' => 'required'
             ]);
 
             if ($validator->fails()) {
@@ -117,13 +105,12 @@ class CourseController extends Controller
                 return redirect()->back()->withInput();
             }
 
-            $course->update([
-                'name' => $request->name,
-                'description' => $request->description,
-            ]);
+            $sekolahCourse->course_id = $request->course_id;
+            $sekolahCourse->guru_id = $request->guru_id;
+            $sekolahCourse->save();
 
             Alert::success('Success', 'Course updated successfully');
-            return redirect()->route('course.index');
+            return redirect()->route('admin.course.index');
         } catch (\Throwable $th) {
             Alert::error('Error', $th->getMessage());
             return redirect()->back()->withInput();
@@ -133,15 +120,15 @@ class CourseController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Course $course)
+    public function destroy(SekolahCourse $sekolahCourse)
     {
         try {
-            $course->delete();
+            $sekolahCourse->delete();
             Alert::success('Success', 'Course deleted successfully');
-            return redirect()->route('course.index');
+            return redirect()->route('admin.course.index');
         } catch (\Throwable $th) {
             Alert::error('Error', $th->getMessage());
-            return redirect()->back();
+            return redirect()->back()->withInput();
         }
     }
 }

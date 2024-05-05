@@ -3,14 +3,17 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Models\User;
 use Illuminate\Auth\Events\PasswordReset;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Password;
+use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
 use Illuminate\Validation\Rules;
 use Illuminate\View\View;
+use RealRashid\SweetAlert\Facades\Alert;
 
 class NewPasswordController extends Controller
 {
@@ -19,7 +22,8 @@ class NewPasswordController extends Controller
      */
     public function create(Request $request): View
     {
-        return view('pages.auth.reset-password', ['request' => $request]);
+        $dataUser = User::where('email', $request->email)->first();
+        return view('pages.auth.reset-password', ['request' => $request, 'dataUser' => $dataUser]);
     }
 
     /**
@@ -29,11 +33,16 @@ class NewPasswordController extends Controller
      */
     public function store(Request $request): RedirectResponse
     {
-        $request->validate([
+        $validator = Validator::make($request->all(), [
             'token' => ['required'],
             'email' => ['required', 'email'],
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
         ]);
+
+        if ($validator->fails()) {
+            Alert::error('Error', $validator->errors()->first());
+            return redirect()->back()->withInput();
+        }
 
         // Here we will attempt to reset the user's password. If it is successful we
         // will update the password on an actual user model and persist it to the
@@ -49,6 +58,8 @@ class NewPasswordController extends Controller
                 event(new PasswordReset($user));
             }
         );
+
+        Alert::toast('Password berhasil direset!', 'success');
 
         // If the password was successfully reset, we will redirect the user back to
         // the application's home authenticated view. If there is an error we can

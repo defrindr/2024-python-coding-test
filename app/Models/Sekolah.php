@@ -37,8 +37,8 @@ class Sekolah extends Model
         return $this->hasMany(Siswa::class, 'sekolah_id', 'id');
     }
 
-    public function course()
+    public function sekolahcourse()
     {
-        return $this->belongsToMany(Course::class, 'sekolah_course', 'sekolah_id', 'course_id');
+        return $this->hasMany(SekolahCourse::class, 'sekolah_id', 'id');
     }
 }

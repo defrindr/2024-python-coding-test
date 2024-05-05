@@ -1,6 +1,7 @@
 <?php
 
-use App\Http\Controllers\SekolahController;
+use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\SekolahCourseGuruController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -15,7 +16,7 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::middleware(['auth', 'role:guru'])->group(function () {
-    Route::get('/guru/dashboard', function () {
-        return view('pages.dashboard.guru-dashboard');
-    })->name('dashboard.guru');
+    Route::get('/guru/dashboard', [DashboardController::class, 'guru'])->name('dashboard.guru');
+
+    Route::get('/guru/course', [SekolahCourseGuruController::class, 'index'])->name('guru.course.index');
 });

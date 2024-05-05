@@ -11,7 +11,7 @@
       <div class="col-md-12">
         <div class="card">
           <div class="card-header d-flex justify-content-between align-items-center">
-            <h4>Form Ambil Course Course</h4>
+            <h4>Form Ambil Course</h4>
           </div>
           <div class="card-body">
             <form method="POST" action="{{ route('admin.course.store') }}"
@@ -25,6 +25,20 @@
                     @foreach ($courses as $item)
                       <option value="{{ $item->id }}" {{ old('course_id') == $item->id ? 'selected' : '' }}>
                         {{ $item->name }}
+                      </option>
+                    @endforeach
+                  </select>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label for="guru_id" class="mb-1 control-label">Pilih Guru</label>
+                <div class="col-sm-12">
+                  <select class="form-select" id="guru_id" name="guru_id" required>
+                    <option value="">Pilih Guru</option>
+                    @foreach ($guru as $item)
+                      <option value="{{ $item->id }}" {{ old('guru_id') == $item->id ? 'selected' : '' }}>
+                        {{ $item->user->name }}
                       </option>
                     @endforeach
                   </select>

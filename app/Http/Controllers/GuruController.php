@@ -53,7 +53,6 @@ class GuruController extends Controller
             'email' => 'required|email|unique:users,email',
             'password' => 'required',
             'alamat' => 'required',
-            'mata_pelajaran' => 'required',
             'nip' => 'required|unique:guru,nip',
             'sekolah_id' => 'required',
         ]);
@@ -77,7 +76,6 @@ class GuruController extends Controller
                     'sekolah_id' => $request->sekolah_id,
                     'nip' => $request->nip,
                     'alamat' => $request->alamat,
-                    'mata_pelajaran' => $request->mata_pelajaran,
                 ]);
                 Alert::toast('Data guru berhasil ditambahkan!', 'success');
                 if (auth()->user()->role == 'super_admin')
@@ -124,7 +122,6 @@ class GuruController extends Controller
             'email' => 'required|email',
             'password' => 'required',
             'alamat' => 'required',
-            'mata_pelajaran' => 'required',
             'nip' => 'required',
             'sekolah_id' => 'required',
         ]);
@@ -139,12 +136,11 @@ class GuruController extends Controller
                 'name' => $request->name,
                 'email' => $request->email,
                 'password' => bcrypt($request->password),
-                'guru' => [
-                    'nip' => $request->nip,
-                    'alamat' => $request->alamat,
-                    'mata_pelajaran' => $request->mata_pelajaran,
-                    'sekolah_id' => $request->sekolah_id,
-                ]
+            ]);
+            $guru->guru()->update([
+                'nip' => $request->nip,
+                'alamat' => $request->alamat,
+                'sekolah_id' => $request->sekolah_id,
             ]);
             Alert::toast('Data guru berhasil diubah!', 'success');
             if (auth()->user()->role == 'super_admin')

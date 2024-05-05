@@ -46,12 +46,11 @@ class AuthenticatedSessionController extends Controller
             if ($request->user()->admin->approved == 1) {
                 $url = '/admin/dashboard';
             } else {
-                // unaunthenticate
                 Auth::guard('web')->logout();
                 $request->session()->invalidate();
                 $request->session()->regenerateToken();
                 Alert::toast('Admin belum disetujui!', 'error');
-                return redirect()->back();
+                return redirect()->route('login');
             }
         } else if ($request->user()->role == 'guru') {
             $url = '/guru/dashboard';

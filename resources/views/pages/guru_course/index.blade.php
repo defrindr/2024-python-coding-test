@@ -6,20 +6,15 @@
       <div class="col-md-12">
         <div class="card">
           <div class="card-header d-flex justify-content-between align-items-center">
-            <h4>List Data Course yang telah diambil</h4>
-            <a class="btn btn-info" href="{{ route('admin.course.create') }}">
-              Ambil Course Baru
-            </a>
+            <h4>List Data Course untuk guru {{ Auth::user()->name }}</h4>
           </div>
           <div class="card-body table-responsive">
             <table class="table table-bordered data-table">
               <thead>
                 <tr>
                   <th>No</th>
-                  <th>Nama Guru</th>
                   <th>Nama Course</th>
                   <th>Deskripsi</th>
-                  <th width="280px">Action</th>
                 </tr>
               </thead>
               <tbody>
@@ -38,14 +33,10 @@
       const table = $('.data-table').DataTable({
         processing: true,
         serverSide: true,
-        ajax: "{{ route('admin.course.index') }}",
+        ajax: "{{ route('guru.course.index') }}",
         columns: [{
             data: 'DT_RowIndex',
             name: 'DT_RowIndex'
-          },
-          {
-            data: 'guru.user.name',
-            name: 'guru.user.name'
           },
           {
             data: 'course.name',
@@ -54,12 +45,6 @@
           {
             data: 'course.description',
             name: 'course.description'
-          },
-          {
-            data: 'action',
-            name: 'action',
-            orderable: false,
-            searchable: false
           },
         ]
       });

@@ -11,8 +11,8 @@ class Course extends Model
 
     protected $fillable = ['name', 'description'];
 
-    public function sekolah()
+    public function sekolahcourse()
     {
-        return $this->belongsToMany(Sekolah::class, 'sekolah_course', 'course_id', 'sekolah_id');
+        return $this->hasMany(SekolahCourse::class, 'course_id', 'id');
     }
 }

@@ -1,7 +1,7 @@
 
 <?php
 
-use App\Http\Controllers\SekolahController;
+use App\Http\Controllers\DashboardController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -16,7 +16,5 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::middleware(['auth', 'role:siswa'])->group(function () {
-    Route::get('/siswa/dashboard', function () {
-        return view('pages.dashboard.siswa-dashboard');
-    })->name('dashboard.siswa');
+    Route::get('/siswa/dashboard', [DashboardController::class, 'siswa'])->name('dashboard.siswa');
 });

@@ -17,7 +17,6 @@ return new class extends Migration
             $table->foreignId('sekolah_id')->constrained('sekolah')->cascadeOnDelete();
             $table->string('nip', 32)->unique()->nullable();
             $table->string('alamat')->nullable();
-            $table->string('mata_pelajaran')->nullable();
             $table->timestamps();
         });
     }

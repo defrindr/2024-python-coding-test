@@ -92,15 +92,6 @@
                 </div>
               @endif
 
-              {{-- mata pelajaran --}}
-              <div class="form-group">
-                <label for="mata_pelajaran" class="mb-1 control-label">Mata Pelajaran</label>
-                <div class="col-sm-12">
-                  <input type="text" class="form-control" id="mata_pelajaran" name="mata_pelajaran"
-                    placeholder="Mata Pelajaran" value="{{ old('mata_pelajaran') }}" required />
-                </div>
-              </div>
-
               <div class="form-group">
                 <label for="alamat" class="mb-1 control-label">Alamat</label>
                 <div class="col-sm-12">

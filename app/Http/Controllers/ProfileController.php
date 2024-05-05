@@ -39,7 +39,6 @@ class ProfileController extends Controller
                 'name' => 'required',
                 'email' => 'required|email|unique:users,email,' . $request->user()->id,
                 'nip' => 'required|unique:guru,nip,' . $request->user()->guru->id,
-                'mata_pelajaran' => 'required',
                 'alamat' => 'required',
             ]);
 
@@ -50,7 +49,6 @@ class ProfileController extends Controller
 
             $request->user()->guru->update([
                 'nip' => $request->nip,
-                'mata_pelajaran' => $request->mata_pelajaran,
                 'alamat' => $request->alamat,
             ]);
         } elseif ($request->user()->role == 'siswa') {

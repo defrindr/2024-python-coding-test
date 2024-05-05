@@ -18,7 +18,6 @@ class GuruSeeder extends Seeder
             'sekolah_id' => 1,
             'nip' => '1234567890',
             'alamat' => 'Jl. Raya No. 1',
-            'mata_pelajaran' => 'Matematika'
         ]);
     }
 }

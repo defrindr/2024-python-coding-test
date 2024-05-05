@@ -1,51 +1,42 @@
 <div class="sidebar-content">
-    <ul>
-        <li class="{{ request()->routeIs('dashboard.guru') ? 'active' : '' }}">
-            <a href="{{ route('dashboard.guru') }}" class="link">
-                <i class="ti-home"></i>
-                <span>Dashboard</span>
-            </a>
-        </li>
+  <ul>
+    <li class="{{ request()->routeIs('dashboard.guru') ? 'active' : '' }}">
+      <a href="{{ route('dashboard.guru') }}" class="link">
+        <i class="ti-home"></i>
+        <span>Dashboard</span>
+      </a>
+    </li>
 
-        <li class="menu-category">
-            <span class="text-uppercase">Management Data</span>
+    <li class="menu-category">
+      <span class="text-uppercase">Management Data</span>
+    </li>
+    <li class="{{ request()->routeIs(['siswa*']) ? 'active' : '' }}">
+      <a href="#" class="main-menu has-dropdown">
+        <i class="fa-solid fa-users"></i>
+        <span>User</span>
+      </a>
+      <ul class="sub-menu">
+        <li>
+          <a href="{{ route('siswa.index') }}" class="link"><span>Siswa</span></a>
+        </li>
+      </ul>
+    </li>
+    <li class="{{ request()->routeIs(['admin.kelas*', 'guru.course*']) ? 'active' : '' }}">
+      <a href="#" class="main-menu has-dropdown">
+        <i class="fa-solid fa-school"></i>
+        <span>Course & Modul</span>
+      </a>
+      <ul class="sub-menu">
+        <li>
+          <a href="{{ route('admin.kelas.index') }}" class="link"> <span>Kelas</span></a>
         </li>
         <li>
-            <a href="#" class="main-menu has-dropdown">
-                <i class="fa-solid fa-users"></i>
-                <span>User</span>
-            </a>
-            <ul class="sub-menu">
-                <li>
-                    <a href="element-accordion.html" class="link"><span>Guru</span></a>
-                </li>
-                <li>
-                    <a href="element-tabs-collapse.html" class="link"><span>Siswa</span></a>
-                </li>
-            </ul>
+          <a href="{{ route('guru.course.index') }}" class="link"> <span>Course</span></a>
         </li>
         <li>
-            <a href="#" class="main-menu has-dropdown">
-                <i class="fa-solid fa-school"></i>
-                <span>Course & Modul</span>
-            </a>
-            <ul class="sub-menu">
-                <li>
-                    <a href="form-element.html" class="link"> <span>Kelas</span></a>
-                </li>
-                <li>
-                    <a href="form-element.html" class="link"> <span>Course</span></a>
-                </li>
-                <li>
-                    <a href="form-datepicker.html" class="link"> <span>Modul</span></a>
-                </li>
-            </ul>
+          <a href="form-datepicker.html" class="link"> <span>Modul</span></a>
         </li>
-        <li>
-            <a href="#" class="link">
-                <i class="ti-alert"></i>
-                <span>Permission</span>
-            </a>
-        </li>
-    </ul>
+      </ul>
+    </li>
+  </ul>
 </div>

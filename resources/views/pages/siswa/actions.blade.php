@@ -1,6 +1,6 @@
 <div class="btn-group gap-2">
-  <a href="{{ route('admin.course.edit', $row->id) }}" class="btn btn-primary btn-sm"><i class="ti-pencil-alt"></i></a>
-  <form action="{{ route('admin.course.destroy', $row->id) }}" method="POST" class="d-inline">
+  <a href="{{ route('siswa.edit', $row->id) }}" class="btn btn-primary btn-sm"><i class="ti-pencil-alt"></i></a>
+  <form action="{{ route('siswa.destroy', $row->id) }}" method="POST" class="d-inline">
     @csrf
     @method('DELETE')
     <button type="submit" class="show_confirm btn btn-danger btn-sm" data-toggle="tooltip" title="Delete">

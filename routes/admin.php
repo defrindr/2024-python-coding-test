@@ -1,10 +1,9 @@
 <?php
 
-use App\Http\Controllers\CourseController;
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\GuruController;
-use App\Http\Controllers\KelasController;
 use App\Http\Controllers\ProfileController;
-use App\Http\Controllers\SekolahController;
+use App\Http\Controllers\SekolahCourseController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -19,9 +18,7 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::middleware(['auth', 'role:admin'])->group(function () {
-    Route::get('/admin/dashboard', function () {
-        return view('pages.dashboard.admin-dashboard');
-    })->name('dashboard.admin');
+    Route::get('/admin/dashboard', [DashboardController::class, 'admin'])->name('dashboard.admin');
 
     Route::get('admin/guru', [GuruController::class, 'index'])->name('admin.guru.index');
     Route::get('admin/guru/create', [GuruController::class, 'create'])->name('admin.guru.create');
@@ -30,18 +27,12 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::patch('admin/guru/{guru}', [GuruController::class, 'update'])->name('admin.guru.update');
     Route::delete('admin/guru/{guru}', [GuruController::class, 'destroy'])->name('admin.guru.destroy');
 
-    Route::get('/admin/kelas', [KelasController::class, 'index'])->name('admin.kelas.index');
-    Route::get('/admin/kelas/create', [KelasController::class, 'create'])->name('admin.kelas.create');
-    Route::post('/admin/kelas', [KelasController::class, 'store'])->name('admin.kelas.store');
-    Route::get('/admin/kelas/{kelas}/edit', [KelasController::class, 'edit'])->name('admin.kelas.edit');
-    Route::patch('/admin/kelas/{kelas}', [KelasController::class, 'update'])->name('admin.kelas.update');
-    Route::delete('/admin/kelas/{kelas}', [KelasController::class, 'destroy'])->name('admin.kelas.destroy');
-
-    Route::prefix('/admin/course')->group(function () {
-        Route::get('/', [CourseController::class, 'adminIndex'])->name('admin.course.index');
-        Route::get('/create', [CourseController::class, 'createTakeCourse'])->name('admin.course.create');
-        Route::post('/', [CourseController::class, 'storeTakeCourse'])->name('admin.course.store');
-    });
+    Route::get('/admin/course', [SekolahCourseController::class, 'index'])->name('admin.course.index');
+    Route::get('/admin/course/create', [SekolahCourseController::class, 'create'])->name('admin.course.create');
+    Route::post('/admin/course', [SekolahCourseController::class, 'store'])->name('admin.course.store');
+    Route::get('/admin/course/{sekolahCourse}/edit', [SekolahCourseController::class, 'edit'])->name('admin.course.edit');
+    Route::patch('/admin/course/{sekolahCourse}', [SekolahCourseController::class, 'update'])->name('admin.course.update');
+    Route::delete('/admin/course/{sekolahCourse}', [SekolahCourseController::class, 'destroy'])->name('admin.course.destroy');
 
     Route::patch('/admin/profile/sekolah', [ProfileController::class, 'updateSekolah'])->name('profile.updateSekolah');
 });

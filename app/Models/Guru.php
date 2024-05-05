@@ -15,7 +15,6 @@ class Guru extends Model
         'sekolah_id',
         'nip',
         'alamat',
-        'mata_pelajaran'
     ];
 
     public function user()
@@ -26,5 +25,10 @@ class Guru extends Model
     public function sekolah()
     {
         return $this->belongsTo(Sekolah::class, 'sekolah_id', 'id');
+    }
+
+    public function sekolahCourse()
+    {
+        return $this->hasMany(SekolahCourse::class, 'guru_id', 'id');
     }
 }

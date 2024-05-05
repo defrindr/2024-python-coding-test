@@ -63,6 +63,14 @@
             </div>
           </div>
 
+          <div id="nis_input" class="mb-3 d-none">
+            <label class="mb-2 text-muted" for="nis">NIS</label>
+            <div class="input-group input-group-join mb-3">
+              <input type="text" placeholder="Masukkan NIS" id="nis" class="form-control" name="nis">
+              <span class="input-group-text rounded-end">&nbsp<i class="fa fa-id-card"></i>&nbsp</span>
+            </div>
+          </div>
+
           <div id="sekolah_input" class="mb-3">
             <label class="mb-2 text-muted" for="sekolah_id">Asal Sekolah</label>
             <div class="input-group input-group-join mb-3">
@@ -85,6 +93,7 @@
               <span class="input-group-text rounded-end">&nbsp<i class="fa fa-school"></i>&nbsp</span>
             </div>
           </div>
+
 
           <div id="admin_form" class="d-flex flex-column gap-3 mb-3 d-none">
             <div>
@@ -111,7 +120,7 @@
       </div>
     </div>
     <div class="text-center mt-5 text-muted">
-      Copyright &copy; 2024 &mdash; Selpu-v.2
+      Copyright &copy; 2022 &mdash; Mulai Dari Null
     </div>
   </div>
   <script>
@@ -141,7 +150,9 @@
       const adminForm = $('#admin_form');
       const sekolahInput = $('#sekolah_input');
       const kelasInput = $('#kelas_input');
+      const nisInput = $('#nis_input');
       const kelasId = $('#kelas_id');
+      const nisId = $('#nis');
       const sekolah = $('#sekolah');
       const idSekolah = $('#sekolah_id');
       role.change(function() {
@@ -154,8 +165,13 @@
           if (role.val() === 'siswa') {
             kelasInput.addClass('d-block').removeClass('d-none');
             kelasId.attr('required', true);
+            nisInput.addClass('d-block').removeClass('d-none');
+            nisId.attr('required', true);
           } else {
             kelasInput.addClass('d-none').removeClass('d-block');
+            nisInput.addClass('d-none').removeClass('d-block');
+            kelasId.attr('required', false);
+            nisId.attr('required', false);
           }
           adminForm.addClass('d-none').removeClass('d-flex');
           sekolahInput.addClass('d-block').removeClass('d-none');
@@ -172,14 +188,14 @@
               sekolah_id: idSekolah.val()
             },
             success: function(data) {
-              console.log(data);
               if (data.length > 0) {
+                kelasId.find('option').remove().end();
                 $.each(data, function(index, kelas) {
                   kelasId.append('<option value="' + kelas.id + '">' + kelas.nama_kelas +
                     '</option>');
                 });
               } else {
-                // Handle the case where no kelas are found
+                kelasId.find('option').remove().end();
                 kelasId.append('<option value="">Tidak ada data kelas</option>');
               }
             },

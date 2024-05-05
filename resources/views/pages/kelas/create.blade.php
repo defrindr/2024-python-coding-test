@@ -46,14 +46,22 @@
                     </select>
                   </div>
                 </div>
-              @else
-                {{-- text readonly current sekolah name and hidden sekolah id --}}
+              @elseif(Auth::user()->role == 'admin')
                 <input type="hidden" name="sekolah_id" value="{{ Auth::user()->admin->sekolah_id }}">
                 <div class="form-group">
                   <label for="sekolah" class="mb-1 control-label">Asal Sekolah</label>
                   <div class="col-sm-12">
                     <input type="text" class="form-control" id="sekolah"
                       value="{{ Auth::user()->admin->sekolah->nama }}" readonly />
+                  </div>
+                </div>
+              @else
+                <input type="hidden" name="sekolah_id" value="{{ Auth::user()->guru->sekolah_id }}">
+                <div class="form-group">
+                  <label for="sekolah" class="mb-1 control-label">Asal Sekolah</label>
+                  <div class="col-sm-12">
+                    <input type="text" class="form-control" id="sekolah"
+                      value="{{ Auth::user()->guru->sekolah->nama }}" readonly />
                   </div>
                 </div>
               @endif

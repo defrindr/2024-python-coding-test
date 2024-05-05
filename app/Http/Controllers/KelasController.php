@@ -18,8 +18,10 @@ class KelasController extends Controller
     {
         if (Auth::user()->role == 'super_admin')
             $data = Kelas::with('sekolah')->latest()->get();
-        else
+        elseif (Auth::user()->role == 'admin')
             $data = Kelas::with('sekolah')->where('sekolah_id', Auth::user()->admin->sekolah_id)->latest()->get();
+        else
+            $data = Kelas::with('sekolah')->where('sekolah_id', Auth::user()->guru->sekolah_id)->latest()->get();
         if ($request->ajax()) {
             return datatables()->of($data)
                 ->addIndexColumn()
@@ -47,7 +49,7 @@ class KelasController extends Controller
     public function store(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'nama_kelas' => 'required|unique:kelas,nama_kelas',
+            'nama_kelas' => 'required',
             'sekolah_id' => 'required',
         ]);
 
@@ -84,7 +86,7 @@ class KelasController extends Controller
     public function update(Request $request, Kelas $kelas)
     {
         $validator = Validator::make($request->all(), [
-            'nama_kelas' => 'required|unique:kelas,nama_kelas,' . $kelas->id,
+            'nama_kelas' => 'required',
             'sekolah_id' => 'required',
         ]);
 
