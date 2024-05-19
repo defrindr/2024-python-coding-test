@@ -45,20 +45,6 @@
                 </div>
               </div>
 
-              <div class="d-flex flex-column gap-3" id="modul">
-                <div class="row" id="modul-container[0]">
-                  <div class="form-group col-10">
-                    <label for="file[0]" class="mb-1 control-label">Upload Modul</label>
-                    <div class="col-sm-12">
-                      <input type="file" class="form-control" id="file[0]" name="file[0]">
-                    </div>
-                  </div>
-                  <button type="button" class="btn btn-primary col-2 col-md-1 h-25 mt-auto" id="add-modul">
-                    <i class="ti-plus"></i>
-                  </button>
-                </div>
-              </div>
-
               <div class="col-sm-offset-2 col-sm-10">
                 <button type="submit" class="btn btn-primary">
                   Submit
@@ -70,26 +56,4 @@
       </div>
     </div>
   </div>
-  <script>
-    let i = 0;
-    $('#add-modul').click(function() {
-      i++;
-      $('#modul').append(`
-        <div class="row" id="modul-container[${i}]">
-          <div class="form-group col-10">
-            <label for="file[${i}]" class="mb-1 control-label">Upload Modul</label>
-            <div class="col-sm-12">
-              <input type="file" class="form-control" id="file[${i}]" name="file[${i}]">
-            </div>
-          </div>
-          <button type="button" class="btn btn-warning col-2 col-md-1 h-25 mt-auto" id="remove-modul">
-            <i class="ti-minus"></i>
-          </button>
-        </div>
-      `);
-    });
-    $(document).on("click", "#remove-modul", function() {
-      $(this).closest("div").remove();
-    });
-  </script>
 @endsection

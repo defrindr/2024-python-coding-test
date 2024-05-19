@@ -15,10 +15,16 @@ class Modul extends Model
         'nama',
         'file_path',
         'sekolah_course_id',
+        'pertemuan'
     ];
 
     public function sekolahCourse()
     {
         return $this->belongsTo(SekolahCourse::class, 'sekolah_course_id', 'id');
+    }
+
+    public function penilaianModulSiswa()
+    {
+        return $this->hasMany(PenilaianModulSiswa::class);
     }
 }

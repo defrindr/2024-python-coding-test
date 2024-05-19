@@ -11,12 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('sekolah_course', function (Blueprint $table) {
+        Schema::create('penilaian_modul_siswa', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('sekolah_id')->constrained('sekolah')->cascadeOnDelete();
-            $table->foreignId('course_id')->constrained('courses')->cascadeOnDelete();
-            $table->foreignId('guru_id')->constrained('guru')->nullable();
-            $table->integer('pertemuan')->default(0);
+            $table->foreignId('modul_id')->constrained('modul');
+            $table->foreignId('siswa_id')->constrained('siswa');
+            $table->boolean('is_upload_tugas')->default(false);
             $table->timestamps();
         });
     }
@@ -26,6 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('sekolah_course');
+        Schema::dropIfExists('penilaian_modul_siswa');
     }
 };

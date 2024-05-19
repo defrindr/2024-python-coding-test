@@ -15,6 +15,7 @@ class SekolahCourse extends Model
         'sekolah_id',
         'course_id',
         'guru_id',
+        'pertemuan'
     ];
 
     public function sekolah()

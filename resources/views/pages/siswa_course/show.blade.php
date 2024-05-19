@@ -33,6 +33,10 @@
                 </div>
               </div>
 
+              <div class="form-group">
+                {!! $chart->container() !!}
+              </div>
+
               <table class="table table-bordered data-table">
                 <thead>
                   <tr>
@@ -51,6 +55,8 @@
       </div>
     </div>
   </div>
+  <script src="{{ $chart->cdn() }}"></script>
+  {{ $chart->script() }}
   <script type="text/javascript">
     $(function() {
       const table = $('.data-table').DataTable({

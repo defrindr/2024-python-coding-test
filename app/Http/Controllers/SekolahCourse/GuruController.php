@@ -70,7 +70,7 @@ class GuruController extends Controller
                 return redirect()->route('admin.course.index');
             }
             $courses = Course::get();
-            $moduls = Modul::where('sekolah_course_id', $sekolahCourse->id)->get();
+            $moduls = Modul::where('sekolah_course_id', $sekolahCourse->id)->get()->groupBy('pertemuan');
             return view('pages.guru_course.edit', compact('sekolahCourse', 'courses', 'moduls'));
         } catch (\Throwable $th) {
             Alert::error('Error', $th->getMessage());
@@ -89,7 +89,8 @@ class GuruController extends Controller
                 return redirect()->back()->withInput();
             }
             $validator = Validator::make($request->all(), [
-                'file.*' => 'nullable|mimes:pdf,doc,docx,xls,xlsx,ppt,pptx|max:8192'
+                'file.*.*' => 'mimes:pdf,doc,docx,xls,xlsx,ppt,pptx|max:8192',
+                'pertemuan' => 'required|numeric',
             ]);
 
             if ($validator->fails()) {
@@ -97,20 +98,30 @@ class GuruController extends Controller
                 return redirect()->back()->withInput();
             }
 
-            if ($request->hasFile('file')) {
-                foreach ($request->file('file') as $file) {
-                    $file_name = date('d-m-Y') . '_' . $file->getClientOriginalName();
-                    $file_path = $file->storeAs('public/modul', $file_name);
-                    Modul::create([
-                        'nama' => $file_name,
-                        'file_path' => $file_path,
-                        'sekolah_course_id' => $sekolahCourse->id
-                    ]);
+            $sekolahCourse->update([
+                'pertemuan' => $request->pertemuan
+            ]);
+
+            $arrayKeys = array_keys($request->file);
+            foreach ($arrayKeys as $key) {
+                for ($j = 0; $j < 3; $j++) {
+                    if ($request->hasFile("file.$key.$j")) {
+                        $index = $key + 1;
+                        $file = $request->file("file.$key.$j");
+                        $file_name = "Pertemuan-$index" . '_' . $file->getClientOriginalName();
+                        $file_path = $file->storeAs('public/modul', $file_name);
+                        Modul::create([
+                            'nama' => $file_name,
+                            'file_path' => $file_path,
+                            'sekolah_course_id' => $sekolahCourse->id,
+                            'pertemuan' => $index
+                        ]);
+                    }
                 }
             }
 
             Alert::success('Success', 'Course berhasil diupdate');
-            return redirect()->route('guru.course.index');
+            return redirect()->back();
         } catch (\Throwable $th) {
             Alert::error('Error', $th->getMessage());
             return redirect()->back()->withInput();

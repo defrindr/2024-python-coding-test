@@ -16,6 +16,7 @@ return new class extends Migration
             $table->string('nama');
             $table->string('file_path');
             $table->foreignId('sekolah_course_id')->constrained('sekolah_course');
+            $table->integer('pertemuan');
             $table->timestamps();
         });
     }

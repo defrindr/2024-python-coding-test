@@ -27,13 +27,13 @@ class AuthenticatedSessionController extends Controller
     public function store(LoginRequest $request): RedirectResponse
     {
         $validator = Validator::make($request->all(), [
-            'email' => 'required|email',
-            'password' => 'required',
+            'email' => 'required|email|exists:users,email',
+            'password' => 'required|string|min:8',
         ]);
 
         if ($validator->fails()) {
-            Alert::toast('Email atau password salah!', 'error');
-            return redirect()->back()->withErrors($validator->errors())->withInput();
+            Alert::error('Error', $validator->errors()->first());
+            return redirect()->back()->withInput();
         }
 
         $request->authenticate();

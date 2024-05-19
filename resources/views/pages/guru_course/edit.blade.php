@@ -40,60 +40,51 @@
                 </div>
               </div>
 
-              <div class="d-flex flex-column gap-3" id="modul">
-                @if ($sekolahCourse->modul->isEmpty())
-                  <div class="row" id="modul-container[0]">
-                    <div class="form-group col-10">
-                      <label for="file[0]" class="mb-1 control-label">Upload Modul</label>
-                      <div class="col-sm-12">
-                        <input type="file" class="form-control" id="file[0]" name="file[0]">
-                      </div>
-                    </div>
-                    <button type="button" class="btn btn-primary col-1 h-25 mt-auto" id="add-modul">
-                      <i class="ti-plus"></i>
-                    </button>
-                  </div>
-                @endif
-                @foreach ($sekolahCourse->modul as $index => $modul)
-                  <div class="row" id="modul-container[{{ $index }}]">
-                    <div class="form-group col-10">
-                      @if ($modul->file_path)
-                        <label for="file{{ $index }}" class="mb-1 control-label">Modul
-                          {{ $modul->nama }}</label>
-                      @else
-                        <label for="file[{{ $index }}]" class="mb-1 control-label">Upload Modul</label>
-                      @endif
-                      <div class="col-sm-12">
-                        @if ($modul->file_path)
-                          <div class="d-flex align-items-center flex-column flex-md-row gap-2">
-                            <a href="{{ route('modul.download', $modul->id) }}" class="btn btn-primary col-12 col-md-2">
-                              Download
-                            </a>
-                            <input type="file" class="form-control" id="file{{ $index }}"
-                              name="file{{ $index }}">
-                            <input type="hidden" name="modul_id[{{ $index }}]" value="{{ $modul->id }}">
-                            <button type="button" class="btn btn-info col-md-1 col-12 update-modul">
-                              <i class="ti-save"></i>
-                            </button>
-                            <button type="button" class="btn btn-danger col-md-1 col-12 delete-modul">
-                              <i class="ti-trash"></i>
-                            </button>
-                          </div>
-                        @else
-                          <input type="file" class="form-control" id="file[{{ $index }}]"
-                            name="file[{{ $index }}]">
-                        @endif
-                      </div>
-                    </div>
-                    @if ($loop->last)
-                      <button type="button" class="btn btn-primary col-2 col-md-1 h-25 mt-auto" id="add-modul">
-                        <i class="ti-plus"></i>
-                      </button>
-                    @endif
-                  </div>
-                @endforeach
+              <div class="form-group">
+                <label for="pertemuan" class="mb-1 control-label">Pertemuan</label>
+                <div class="col-sm-12">
+                  <input type="number" class="form-control" min="0" id="pertemuan" name="pertemuan"
+                    value="{{ $sekolahCourse->pertemuan }}" required>
+                </div>
               </div>
 
+              @foreach ($moduls as $modul)
+                <div class="row gap-2" id="modul-container[{{ $loop->index }}]">
+                  <div class="form-group">
+                    <span class="mb-1 fw-bolder control-label">Modul Pertemuan {{ $loop->index + 1 }}</span>
+                  </div>
+                  @foreach ($modul as $file)
+                    <div class="form-group">
+                      @if ($file->file_path)
+                        <label for="file[{{ $loop->parent->index }}][{{ $loop->index }}]"
+                          class="mb-1 control-label">Modul {{ $file->nama }}</label>
+                      @else
+                        <label for="file[{{ $loop->parent->index }}][{{ $loop->index }}]"
+                          class="mb-1 control-label">Modul {{ $loop->index + 1 }}</label>
+                      @endif
+                      <div class="col-sm-12">
+                        <div class="d-flex align-items-center flex-column flex-md-row gap-2">
+                          <a href="{{ route('modul.download', $file->id) }}" class="btn btn-primary col-12 col-md-2">
+                            Download
+                          </a>
+                          <input type="file" class="form-control"
+                            id="file[{{ $loop->parent->index }}][{{ $loop->index }}]"
+                            name="file[{{ $loop->parent->index }}][{{ $loop->index }}]">
+                          <input type="hidden" name="modul_id[{{ $loop->parent->index }}][{{ $loop->index }}]"
+                            value="{{ $file->id }}">
+                          <button type="button" class="btn btn-info col-md-1 col-12 update-modul">
+                            <i class="ti-save"></i>
+                          </button>
+                          <button type="button" class="btn btn-danger col-md-1 col-12 delete-modul">
+                            <i class="ti-trash"></i>
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  @endforeach
+                </div>
+              @endforeach
+              <div class="d-flex flex-column gap-3" id="modul"></div>
               <div class="col-sm-offset-2 col-sm-10">
                 <button type="submit" class="btn btn-primary">
                   Update
@@ -107,71 +98,73 @@
   </div>
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
   <script>
-    let i = 0;
-    $('#add-modul').click(function() {
-      i++;
-      $('#modul').append(`
-        <div class="row" id="modul-container[${i}]">
-          <div class="form-group col-9">
-            <label for="file[${i}]" class="mb-1 control-label">Upload Modul</label>
-            <div class="col-sm-12">
-              <input type="file" class="form-control" id="file[${i}]" name="file[${i}]">
-            </div>
-          </div>
-          <button type="button" class="btn btn-warning col-2 col-md-1 h-25 mt-auto" id="remove-modul">
-            <i class="ti-minus"></i>
-          </button>
-        </div>
-      `);
-    });
-    $(document).on("click", "#remove-modul", function() {
-      $(this).closest("div").remove();
-    });
-    $(document).on("click", ".update-modul", function() {
-      let modulId = $(this).prev().val();
-      let file = $(this).prev().prev().get(0).files[0];
-      if (file) {
-        const formData = new FormData();
-        formData.append('file', file);
-        formData.append('_token', '{{ csrf_token() }}');
-        formData.append('_method', 'PATCH');
-        $.ajax({
-          url: `/modul/${modulId}`,
-          type: 'POST',
-          data: formData,
-          contentType: false,
-          processData: false,
-          success: function(response) {
-            Swal.fire({
-              icon: 'success',
-              title: 'Modul berhasil diupdate',
-              showConfirmButton: false,
-              timer: 1500,
-            }).then(() => {
-              window.location.reload();
-            });
-          },
-          error: function(xhr) {
-            console.log(xhr);
-          }
-        });
+    $(document).ready(function() {
+      let i = 0;
+      @if ($moduls->count() > 0)
+        i = {{ $moduls->count() }}
+        $('#pertemuan').attr('readonly', true);
+      @endif
+      let pertemuan = $('#pertemuan').val();
+      if (pertemuan > 0) {
+        $('#modul').removeClass('d-none');
+        $('#modul').addClass('d-flex');
       }
-    });
-    $(document).on("click", ".delete-modul", function() {
-      let modulId = $(this).prev().prev().val();
-      Swal.fire({
-        title: 'Apakah Anda yakin?',
-        text: "Anda tidak akan dapat mengembalikan ini!",
-        icon: 'warning',
-        showCancelButton: true,
-        confirmButtonColor: '#3085d6',
-        cancelButtonColor: '#d33',
-        confirmButtonText: 'Ya, hapus!'
-      }).then((result) => {
-        if (result.isConfirmed) {
+
+      function updateModulFields() {
+        $('#modul').empty();
+        for (i; i < pertemuan; i++) {
+          $('#modul').append(`
+            <div class="row gap-2" id="modul-container[${i}]">
+              <input type="hidden" name="pertemuan" value="${i+1}">
+              <div class="form-group">
+                <span class="mb-1 fw-bolder control-label">Modul Pertemuan ${i + 1}</span>
+              </div>
+              <div class="form-group col-9">
+                <label for="file[${i}][0]" class="mb-1 control-label">Upload Modul 1</label>
+                <div class="col-sm-12">
+              <input type="file" class="form-control" id="file[${i}][0]" name="file[${i}][0]">
+                </div>
+              </div>
+              <div class="form-group col-9">
+                <label for="file[${i}][1]" class="mb-1 control-label">Upload Modul 2</label>
+                <div class="col-sm-12">
+              <input type="file" class="form-control" id="file[${i}][1]" name="file[${i}][1]">
+                </div>
+              </div>
+              <div class="form-group col-9">
+                <label for="file[${i}][2]" class="mb-1 control-label">Upload Modul 3</label>
+                <div class="col-sm-12">
+              <input type="file" class="form-control" id="file[${i}][2]" name="file[${i}][2]">
+                </div>
+              </div>
+            </div>
+          `);
+        }
+      }
+      updateModulFields();
+
+      $(document).on("change", "#pertemuan", function() {
+        pertemuan = $(this).val();
+        console.log(i);
+        if (pertemuan > 0) {
+          $('#modul').removeClass('d-none');
+          $('#modul').addClass('d-flex');
+        } else {
+          $('#modul').addClass('d-none');
+        }
+        updateModulFields();
+      });
+
+
+      $(document).on("click", ".update-modul", function() {
+        let modulId = $(this).prev().val();
+        console.log(modulId);
+        let file = $(this).prev().prev().get(0).files[0];
+        if (file) {
           const formData = new FormData();
+          formData.append('file', file);
           formData.append('_token', '{{ csrf_token() }}');
-          formData.append('_method', 'DELETE');
+          formData.append('_method', 'PATCH');
           $.ajax({
             url: `/modul/${modulId}`,
             type: 'POST',
@@ -181,7 +174,7 @@
             success: function(response) {
               Swal.fire({
                 icon: 'success',
-                title: 'Modul berhasil dihapus',
+                title: 'Modul berhasil diupdate',
                 showConfirmButton: false,
                 timer: 1500,
               }).then(() => {
@@ -190,15 +183,54 @@
             },
             error: function(xhr) {
               console.log(xhr);
-              Swal.fire({
-                icon: 'error',
-                title: xhr.responseJSON.message,
-                showConfirmButton: false,
-                timer: 1500,
-              });
             }
           });
         }
+      });
+
+      $(document).on("click", ".delete-modul", function() {
+        let modulId = $(this).prev().prev().val();
+        Swal.fire({
+          title: 'Apakah Anda yakin?',
+          text: "Anda tidak akan dapat mengembalikan ini!",
+          icon: 'warning',
+          showCancelButton: true,
+          confirmButtonColor: '#3085d6',
+          cancelButtonColor: '#d33',
+          confirmButtonText: 'Ya, hapus!'
+        }).then((result) => {
+          if (result.isConfirmed) {
+            const formData = new FormData();
+            formData.append('_token', '{{ csrf_token() }}');
+            formData.append('_method', 'DELETE');
+            $.ajax({
+              url: `/modul/${modulId}`,
+              type: 'POST',
+              data: formData,
+              contentType: false,
+              processData: false,
+              success: function(response) {
+                Swal.fire({
+                  icon: 'success',
+                  title: 'Modul berhasil dihapus',
+                  showConfirmButton: false,
+                  timer: 1500,
+                }).then(() => {
+                  window.location.reload();
+                });
+              },
+              error: function(xhr) {
+                console.log(xhr);
+                Swal.fire({
+                  icon: 'error',
+                  title: xhr.responseJSON.message,
+                  showConfirmButton: false,
+                  timer: 1500,
+                });
+              }
+            });
+          }
+        });
       });
     });
   </script>
