@@ -9,6 +9,14 @@ use RealRashid\SweetAlert\Facades\Alert;
 
 class SekolahController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('permission:view sekolah')->only('index');
+        $this->middleware('permission:create sekolah')->only('create', 'store');
+        $this->middleware('permission:edit sekolah')->only('edit', 'update');
+        $this->middleware('permission:delete sekolah')->only('destroy');
+    }
+
     /**
      * Display a listing of the resource.
      */

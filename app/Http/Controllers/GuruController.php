@@ -12,6 +12,14 @@ use RealRashid\SweetAlert\Facades\Alert;
 
 class GuruController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('permission:view guru')->only('index');
+        $this->middleware('permission:create guru')->only('create', 'store');
+        $this->middleware('permission:edit guru')->only('edit', 'update');
+        $this->middleware('permission:delete guru')->only('destroy');
+    }
+
     /**
      * Display a listing of the resource.
      */
@@ -69,6 +77,7 @@ class GuruController extends Controller
                 'password' => bcrypt($request->password),
                 'role' => 'guru',
             ]);
+            $user->assignRole('guru');
 
             if ($user) {
                 Guru::create([

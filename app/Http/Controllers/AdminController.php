@@ -63,6 +63,7 @@ class AdminController extends Controller
                 'role' => 'admin',
                 'password' => bcrypt($request->password),
             ]);
+            $user->assignRole('admin');
 
             Admin::create([
                 'user_id' => $user->id,

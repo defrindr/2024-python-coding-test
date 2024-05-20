@@ -52,7 +52,7 @@ class AdminController extends Controller
             $validator = Validator::make($request->all(), [
                 'course_id' => 'required',
                 'guru_id' => 'required',
-                'file.*' => 'nullable|mimes:pdf,doc,docx,xls,xlsx,ppt,pptx|max:8192'
+                'pertemuan' => 'required|numeric',
             ]);
 
             if ($validator->fails()) {
@@ -65,23 +65,12 @@ class AdminController extends Controller
                 return redirect()->back()->withInput();
             }
 
-            $sekolah_course = SekolahCourse::create([
+            SekolahCourse::create([
                 'sekolah_id' => Auth::user()->admin->sekolah_id,
                 'course_id' => $request->course_id,
-                'guru_id' => $request->guru_id
+                'guru_id' => $request->guru_id,
+                'pertemuan' => $request->pertemuan
             ]);
-
-            if ($request->hasFile('file')) {
-                foreach ($request->file('file') as $file) {
-                    $file_name = date('d-m-Y') . '_' . $file->getClientOriginalName();
-                    $file_path = $file->storeAs('public/modul', $file_name);
-                    Modul::create([
-                        'nama' => $file_name,
-                        'file_path' => $file_path,
-                        'sekolah_course_id' => $sekolah_course->id
-                    ]);
-                }
-            }
 
             Alert::success('Success', 'Course berhasil ditambahkan');
             return redirect()->route('admin.course.index');
@@ -154,7 +143,7 @@ class AdminController extends Controller
             $validator = Validator::make($request->all(), [
                 'course_id' => 'required',
                 'guru_id' => 'required',
-                'file.*' => 'nullable|mimes:pdf,doc,docx,xls,xlsx,ppt,pptx|max:8192'
+                'pertemuan' => 'required|numeric',
             ]);
 
             if ($validator->fails()) {
@@ -164,20 +153,9 @@ class AdminController extends Controller
 
             $sekolahCourse->update([
                 'course_id' => $request->course_id,
-                'guru_id' => $request->guru_id
+                'guru_id' => $request->guru_id,
+                'pertemuan' => $request->pertemuan
             ]);
-
-            if ($request->hasFile('file')) {
-                foreach ($request->file('file') as $file) {
-                    $file_name = date('d-m-Y') . '_' . $file->getClientOriginalName();
-                    $file_path = $file->storeAs('public/modul', $file_name);
-                    Modul::create([
-                        'nama' => $file_name,
-                        'file_path' => $file_path,
-                        'sekolah_course_id' => $sekolahCourse->id
-                    ]);
-                }
-            }
 
             Alert::success('Success', 'Course berhasil diupdate');
             return redirect()->route('admin.course.index');

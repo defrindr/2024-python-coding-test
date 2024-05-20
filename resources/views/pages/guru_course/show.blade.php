@@ -33,6 +33,13 @@
                 </div>
               </div>
 
+              <div class="form-group">
+                <span class="fw-bold">Pertemuan</span>
+                <div class="col-sm-12 mt-1">
+                  <span>{{ $sekolahCourse->pertemuan }}</span>
+                </div>
+              </div>
+
               <table class="table table-bordered data-table">
                 <thead>
                   <tr>

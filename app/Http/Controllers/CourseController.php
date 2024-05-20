@@ -10,6 +10,15 @@ use RealRashid\SweetAlert\Facades\Alert;
 
 class CourseController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('permission:super admin view course')->only('index');
+        $this->middleware('permission:admin view course')->only('adminIndex');
+        $this->middleware('permission:create course')->only('create', 'store');
+        $this->middleware('permission:edit course')->only('edit', 'update');
+        $this->middleware('permission:delete course')->only('destroy');
+    }
+
     /**
      * Display a listing of the resource.
      */

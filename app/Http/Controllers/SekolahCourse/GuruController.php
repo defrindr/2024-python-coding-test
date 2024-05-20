@@ -90,17 +90,12 @@ class GuruController extends Controller
             }
             $validator = Validator::make($request->all(), [
                 'file.*.*' => 'mimes:pdf,doc,docx,xls,xlsx,ppt,pptx|max:8192',
-                'pertemuan' => 'required|numeric',
             ]);
 
             if ($validator->fails()) {
                 Alert::error('Error', $validator->errors()->first());
                 return redirect()->back()->withInput();
             }
-
-            $sekolahCourse->update([
-                'pertemuan' => $request->pertemuan
-            ]);
 
             $arrayKeys = array_keys($request->file);
             foreach ($arrayKeys as $key) {

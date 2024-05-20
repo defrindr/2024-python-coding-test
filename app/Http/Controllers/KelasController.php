@@ -11,6 +11,14 @@ use RealRashid\SweetAlert\Facades\Alert;
 
 class KelasController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('permission:view kelas')->only('index');
+        $this->middleware('permission:create kelas')->only('create', 'store');
+        $this->middleware('permission:edit kelas')->only('edit', 'update');
+        $this->middleware('permission:delete kelas')->only('destroy');
+    }
+
     /**
      * Display a listing of the resource.
      */

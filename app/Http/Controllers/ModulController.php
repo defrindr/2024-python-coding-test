@@ -12,6 +12,14 @@ use RealRashid\SweetAlert\Facades\Alert;
 
 class ModulController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('permission:view modul')->only('index');
+        $this->middleware('permission:create modul')->only('store');
+        $this->middleware('permission:edit modul')->only('update');
+        $this->middleware('permission:delete modul')->only('destroy');
+    }
+
     /**
      * Display a listing of the resource.
      */

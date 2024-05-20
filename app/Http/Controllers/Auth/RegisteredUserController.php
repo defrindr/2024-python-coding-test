@@ -75,10 +75,12 @@ class RegisteredUserController extends Controller
         ]);
 
         if ($request->role == 'guru') {
+            $user->assignRole('guru');
             $user->guru()->create([
                 'sekolah_id' => $request->sekolah_id,
             ]);
         } elseif ($request->role == 'admin') {
+            $user->assignRole('admin');
             Sekolah::create([
                 'nama' => $request->sekolah,
             ]);
@@ -86,6 +88,7 @@ class RegisteredUserController extends Controller
                 'sekolah_id' => Sekolah::latest()->first()->id,
             ]);
         } else {
+            $user->assignRole('siswa');
             $user->siswa()->create([
                 'sekolah_id' => $request->sekolah_id,
                 'kelas_id' => $request->kelas_id,

@@ -13,16 +13,6 @@ class SekolahSeeder extends Seeder
      */
     public function run(): void
     {
-        Sekolah::create([
-            'nama' => 'SMA Negeri 1 Jakarta',
-            'npsn' => '11219819281',
-            'alamat' => 'Jl. Jend. Sudirman No. 1, Jakarta Pusat',
-        ]);
-
-        Sekolah::create([
-            'nama' => 'SMA Negeri 2 Jakarta',
-            'npsn' => '11219819282',
-            'alamat' => 'Jl. Jend. Sudirman No. 2, Jakarta Pusat',
-        ]);
+        //
     }
 }

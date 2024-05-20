@@ -46,6 +46,14 @@
                 </div>
               </div>
 
+              <div class="form-group">
+                <label for="pertemuan" class="mb-1 control-label">Pertemuan</label>
+                <div class="col-sm-12">
+                  <input type="number" class="form-control" min="0" id="pertemuan" name="pertemuan"
+                    value="{{ $sekolahCourse->pertemuan }}" required>
+                </div>
+              </div>
+
               <div class="col-sm-offset-2 col-sm-10">
                 <button type="submit" class="btn btn-primary">
                   Update

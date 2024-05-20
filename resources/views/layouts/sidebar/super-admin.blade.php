@@ -44,8 +44,8 @@
         </li>
       </ul>
     </li>
-    <li>
-      <a href="#" class="link">
+    <li class="{{ request()->routeIs(['permission*']) ? 'active' : '' }}">
+      <a href="{{ route('permission.index') }}" class="link">
         <i class="ti-alert"></i>
         <span>Permission</span>
       </a>

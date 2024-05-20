@@ -5,6 +5,7 @@ use App\Http\Controllers\CourseController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\GuruController;
 use App\Http\Controllers\KelasController;
+use App\Http\Controllers\RolePermissionController;
 use App\Http\Controllers\SekolahController;
 use Illuminate\Support\Facades\Route;
 
@@ -71,5 +72,11 @@ Route::middleware(['auth', 'role:super_admin'])->group(function () {
         Route::get('/{course}/edit', [CourseController::class, 'edit'])->name('course.edit');
         Route::patch('/{course}', [CourseController::class, 'update'])->name('course.update');
         Route::delete('/{course}', [CourseController::class, 'destroy'])->name('course.destroy');
+    });
+
+    Route::prefix('/permission')->group(function () {
+        Route::get('/', [RolePermissionController::class, 'index'])->name('permission.index');
+        Route::get('/{role}/edit', [RolePermissionController::class, 'edit'])->name('permission.edit');
+        Route::put('/{role}', [RolePermissionController::class, 'update'])->name('permission.update');
     });
 });

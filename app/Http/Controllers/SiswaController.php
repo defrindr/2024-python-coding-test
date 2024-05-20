@@ -13,6 +13,14 @@ use RealRashid\SweetAlert\Facades\Alert;
 
 class SiswaController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('permission:view siswa')->only('index');
+        $this->middleware('permission:create siswa')->only('create', 'store');
+        $this->middleware('permission:edit siswa')->only('edit', 'update');
+        $this->middleware('permission:delete siswa')->only('destroy');
+    }
+
     /**
      * Display a listing of the resource.
      */
@@ -86,6 +94,7 @@ class SiswaController extends Controller
                 'email' => $request->email,
                 'password' => bcrypt($request->password),
             ]);
+            $user->assignRole('siswa');
 
             if ($user) {
                 Siswa::create([
