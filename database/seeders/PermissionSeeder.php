@@ -2,7 +2,6 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Spatie\Permission\Models\Permission;
 use Spatie\Permission\Models\Role;
@@ -16,33 +15,33 @@ class PermissionSeeder extends Seeder
     {
         Permission::create(['name' => 'view sekolah']);
         Permission::create(['name' => 'create sekolah']);
-        Permission::create(['name' => 'update sekolah']);
+        Permission::create(['name' => 'edit sekolah']);
         Permission::create(['name' => 'delete sekolah']);
 
         Permission::create(['name' => 'view siswa']);
         Permission::create(['name' => 'create siswa']);
-        Permission::create(['name' => 'update siswa']);
+        Permission::create(['name' => 'edit siswa']);
         Permission::create(['name' => 'delete siswa']);
 
         Permission::create(['name' => 'view guru']);
         Permission::create(['name' => 'create guru']);
-        Permission::create(['name' => 'update guru']);
+        Permission::create(['name' => 'edit guru']);
         Permission::create(['name' => 'delete guru']);
 
         Permission::create(['name' => 'view kelas']);
         Permission::create(['name' => 'create kelas']);
-        Permission::create(['name' => 'update kelas']);
+        Permission::create(['name' => 'edit kelas']);
         Permission::create(['name' => 'delete kelas']);
 
         Permission::create(['name' => 'super admin view course']);
         Permission::create(['name' => 'admin view course']);
         Permission::create(['name' => 'create course']);
-        Permission::create(['name' => 'update course']);
+        Permission::create(['name' => 'edit course']);
         Permission::create(['name' => 'delete course']);
 
         Permission::create(['name' => 'view modul']);
         Permission::create(['name' => 'create modul']);
-        Permission::create(['name' => 'update modul']);
+        Permission::create(['name' => 'edit modul']);
         Permission::create(['name' => 'delete modul']);
 
         Role::create(['name' => 'super_admin'])
@@ -51,50 +50,50 @@ class PermissionSeeder extends Seeder
         Role::create(['name' => 'admin'])->givePermissionTo([
             'view sekolah',
             'create sekolah',
-            'update sekolah',
+            'edit sekolah',
 
             'view siswa',
             'create siswa',
-            'update siswa',
+            'edit siswa',
             'delete siswa',
 
             'view guru',
             'create guru',
-            'update guru',
+            'edit guru',
             'delete guru',
 
             'view kelas',
             'create kelas',
-            'update kelas',
+            'edit kelas',
             'delete kelas',
 
             'admin view course',
 
             'view modul',
             'create modul',
-            'update modul',
+            'edit modul',
             'delete modul',
         ]);
 
         Role::create(['name' => 'guru'])->givePermissionTo([
             'view siswa',
             'create siswa',
-            'update siswa',
+            'edit siswa',
             'delete siswa',
 
             'view kelas',
             'create kelas',
-            'update kelas',
+            'edit kelas',
             'delete kelas',
 
             'view guru',
             'create guru',
-            'update guru',
+            'edit guru',
             'delete guru',
 
             'view modul',
             'create modul',
-            'update modul',
+            'edit modul',
         ]);
 
         Role::create(['name' => 'siswa'])->givePermissionTo([
