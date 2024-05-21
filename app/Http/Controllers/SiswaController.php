@@ -122,7 +122,7 @@ class SiswaController extends Controller
      */
     public function show(Siswa $siswa)
     {
-        //
+        return view('pages.course_python.course_python');
     }
 
     /**
