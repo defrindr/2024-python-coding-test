@@ -1,8 +1,8 @@
 <div class="btn-group gap-2">
   <a href="{{ route('modul.download', $row->id) }}" class="btn btn-primary">
-    <i class="ti-download"></i>
+    Download
   </a>
-  <a href="#" class="btn btn-success">
-    <i class="ti-ruler-pencil"></i>
+  <a href="/python-course-siswa/{{ $row->id }}" class="btn btn-success">
+    Mulai Kerjakan
   </a>
 </div>

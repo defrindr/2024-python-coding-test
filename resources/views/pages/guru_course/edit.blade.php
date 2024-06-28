@@ -137,6 +137,7 @@
               <input type="file" class="form-control" id="file[${i}][2]" name="file[${i}][2]">
                 </div>
               </div>
+
             </div>
           `);
         }

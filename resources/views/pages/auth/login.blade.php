@@ -21,9 +21,6 @@
           <div class="mb-3">
             <div class="mb-2 w-100">
               <label class="text-muted" for="password">Password</label>
-              @if (Route::has('password.request'))
-                <a href="{{ route('password.request') }}" class="float-end">Lupa Password? </a>
-              @endif
             </div>
             <div class="input-group input-group-join mb-3">
               <input type="password" id="password" class="form-control" placeholder="Password Anda" name="password"
@@ -35,11 +32,17 @@
             </div>
           </div>
 
-          <div class="d-flex align-items-center">
+          <div class="d-flex justify-content-between align-items-center mb-3">
             <div class="form-check">
               <input type="checkbox" name="remember" id="remember_me" class="form-check-input" />
               <label for="remember_me" class="form-check-label">Remember Me</label>
             </div>
+            @if (Route::has('password.request'))
+              <a href="{{ route('password.request') }}" class="text-end">Lupa Password?</a>
+            @endif
+          </div>
+
+          <div class="d-flex align-items-center">
             <button type="submit" class="btn btn-primary ms-auto">Login</button>
           </div>
         </form>
@@ -52,7 +55,7 @@
       </div>
     </div>
     <div class="text-center mt-5 text-muted">
-      Copyright &copy; 2024 &mdash; Selpu V.02
+      Copyright &copy; 2024 &mdash; Selpu V.2
     </div>
   </div>
   <script>

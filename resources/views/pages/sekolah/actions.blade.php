@@ -1,11 +1,10 @@
 <div class="btn-group gap-2">
-  <a href="{{ route('sekolah.edit', $row->id) }}" class="btn btn-primary btn-sm"><i
-      class="ti-pencil-alt"></i></a>
+  <a href="{{ route('sekolah.edit', $row->id) }}" class="btn btn-primary btn-sm">Edit</a>
   <form action="{{ route('sekolah.destroy', $row->id) }}" method="POST" class="d-inline">
     @csrf
     @method('DELETE')
     <button type="submit" class="show_confirm btn btn-danger btn-sm" data-toggle="tooltip" title="Delete">
-      <i class="ti-trash"></i>
+      Delete
     </button>
   </form>
 </div>

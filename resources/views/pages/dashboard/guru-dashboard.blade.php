@@ -37,6 +37,15 @@
                 {{ $dataUser->nip }}
               </span>
             </div>
+            <div class="d-flex gap-3">
+              <h6 class="my-auto">Manual Book</h6>
+              @foreach ($manualBooks as $item)
+                <a href="{{ route('manualbook.download', $item->id) }}" class="btn btn-link my-auto">Unduh</a>
+            @endforeach
+            @if ($manualBooks->isEmpty())
+              <span class="my-auto">Tidak ada manual book tersedia</span>
+            @endif
+            </div>
           </div>
         </div>
       </div>

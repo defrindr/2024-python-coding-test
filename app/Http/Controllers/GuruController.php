@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Guru;
+use App\Models\Modul;
 use App\Models\Sekolah;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -119,7 +120,8 @@ class GuruController extends Controller
         $dataSekolah = Sekolah::with('guru')->get();
         $guru->load('guru');
         return view('pages.guru.edit', compact('guru', 'dataSekolah'));
-    }
+    } 
+
 
     /**
      * Update the specified resource in storage.

@@ -24,7 +24,7 @@
                     <td>{{ $role->name }}</td>
                     <td>
                       <a href="{{ route('permission.edit', $role->id) }}" class="btn btn-primary">
-                        <i class="ti-pencil-alt"></i>
+                        Manage Permission
                       </a>
                     </td>
                   </tr>

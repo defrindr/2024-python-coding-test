@@ -15,7 +15,9 @@ class Modul extends Model
         'nama',
         'file_path',
         'sekolah_course_id',
-        'pertemuan'
+        'pertemuan',
+        'kunci_jawaban',
+        'kode_program',
     ];
 
     public function sekolahCourse()

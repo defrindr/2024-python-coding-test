@@ -1,4 +1,4 @@
-<div class="sidebar-content">
+<div class="sidebar-content h-75 d-flex flex-column justify-content-between">
   <ul>
     <li class="{{ request()->routeIs('dashboard.super-admin') ? 'active' : '' }}">
       <a href="{{ route('dashboard.super-admin') }}" class="link">
@@ -48,6 +48,20 @@
       <a href="{{ route('permission.index') }}" class="link">
         <i class="ti-alert"></i>
         <span>Permission</span>
+      </a>
+    </li>
+    <li class="{{ request()->routeIs('manualbook.index') ? 'active' : '' }}">
+      <a href="{{ route('manualbook.index') }}" class="link">
+        <i class="ti-book"></i>
+        <span>Manual Book</span>
+      </a>
+    </li>
+  </ul>
+  <ul>
+    <li class="mt-auto">
+      <a href="#" class="link">
+        <i class="ti-link"></i>
+        <span>FEEDBACK</span>
       </a>
     </li>
   </ul>

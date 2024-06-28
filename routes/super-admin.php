@@ -5,6 +5,7 @@ use App\Http\Controllers\CourseController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\GuruController;
 use App\Http\Controllers\KelasController;
+use App\Http\Controllers\ManualBookController;
 use App\Http\Controllers\RolePermissionController;
 use App\Http\Controllers\SekolahController;
 use Illuminate\Support\Facades\Route;
@@ -64,7 +65,7 @@ Route::middleware(['auth', 'role:super_admin'])->group(function () {
         Route::delete('/{guru}', [GuruController::class, 'destroy'])->name('guru.destroy');
     });
 
-    Route::prefix('/course')->group(function () {
+    Route::prefix('course')->group(function () {
         Route::get('/', [CourseController::class, 'index'])->name('course.index');
         Route::get('/create', [CourseController::class, 'create'])->name('course.create');
         Route::post('/', [CourseController::class, 'store'])->name('course.store');
@@ -74,9 +75,19 @@ Route::middleware(['auth', 'role:super_admin'])->group(function () {
         Route::delete('/{course}', [CourseController::class, 'destroy'])->name('course.destroy');
     });
 
-    Route::prefix('/permission')->group(function () {
+    Route::prefix('permission')->group(function () {
         Route::get('/', [RolePermissionController::class, 'index'])->name('permission.index');
         Route::get('/{role}/edit', [RolePermissionController::class, 'edit'])->name('permission.edit');
         Route::put('/{role}', [RolePermissionController::class, 'update'])->name('permission.update');
+    });
+
+    Route::prefix('manualbook')->group(function () {
+        Route::get('/', [ManualBookController::class, 'index'])->name('manualbook.index');
+        Route::get('/create', [ManualBookController::class, 'create'])->name('manualbook.create');
+        // Route::post('/', [ManualBookController::class, 'store'])->name('manualbook.store');
+        Route::get('/{manualBook}/edit', [ManualBookController::class, 'edit'])->name('manualbook.edit');
+        Route::patch('/{manualBook}', [ManualBookController::class, 'update'])->name('manualbook.update');
+        Route::delete('/{manualBook}', [ManualBookController::class, 'destroy'])->name('manualbook.destroy');
+        
     });
 });

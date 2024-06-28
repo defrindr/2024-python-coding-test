@@ -2,6 +2,7 @@
 <?php
 
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\ManualBookController;
 use App\Http\Controllers\SekolahCourse\SiswaController;
 use Illuminate\Support\Facades\Route;
 
@@ -21,4 +22,5 @@ Route::middleware(['auth', 'role:siswa'])->group(function () {
 
     Route::get('/siswa/course', [SiswaController::class, 'index'])->name('siswa.course.index');
     Route::get('/siswa/course/{sekolahCourse}', [SiswaController::class, 'show'])->name('siswa.course.show');
+
 });

@@ -17,6 +17,8 @@ return new class extends Migration
             $table->string('file_path');
             $table->foreignId('sekolah_course_id')->constrained('sekolah_course');
             $table->integer('pertemuan');
+            $table->text('kunci_jawaban')->nullable();
+            $table->text('kode_program')->nullable();
             $table->timestamps();
         });
     }

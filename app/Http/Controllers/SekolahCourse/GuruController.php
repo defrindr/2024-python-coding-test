@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Course;
 use App\Models\Modul;
 use App\Models\SekolahCourse;
+use GuzzleHttp\Psr7\Response;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
@@ -75,6 +76,33 @@ class GuruController extends Controller
         } catch (\Throwable $th) {
             Alert::error('Error', $th->getMessage());
             return redirect()->back()->withInput();
+        }
+    }
+
+    public function editKunciJawaban(String $id)
+    {
+        try {
+
+            $data = Modul::findOrFail($id);
+
+            return view('pages.guru_course.modul.jawaban', compact('data'));
+        } catch (\Throwable $th) {
+            return redirect()->back()->withInput();
+        }
+    }
+
+    public function updateKunciJawaban(Request $request, String $id)
+    {
+        try {
+            $modul = Modul::findOrFail($id);
+            $modul->update([
+                'kunci_jawaban' => $request->input('kunci_jawaban'),
+                'kode_program' => $request->input('kode_program'),
+            ]);
+
+            return response()->json(['status' => 'success']);
+        } catch (\Throwable $th) {
+            return response()->json(['status' => 'error', 'message' => $th->getMessage()], 500);
         }
     }
 

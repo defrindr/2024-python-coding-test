@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\GuruController;
+use App\Http\Controllers\ManualBookController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\SekolahCourse\AdminController;
 use Illuminate\Support\Facades\Route;
