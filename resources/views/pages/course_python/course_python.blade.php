@@ -17,8 +17,7 @@
         <div class="col-md-8">
           <!-- Display time taken here -->
           <div>
-            <div id="editor" style="height: 500px; width: 100%;">
-              {{ isset($answer) && $answer ? $answer->source : $data->kode_program }}</div>
+            <div id="editor" style="height: 500px; width: 100%;">{{ isset($answer) && $answer ? $answer->source : $data->kode_program }}</div>
           </div>
           <div style="display: none">
             <h4>Unit Tests</h4>
@@ -117,12 +116,8 @@
     }
 
     editor.on('change', function () {
-      if (!startTime) {
-        <?php if (isset($answer) && $answer): ?>
-        startTimer(result ? result.raw_time_taken : <?= $answer -> answered_time ?? 0 ?>);
-        <?php else: ?>
-        startTimer();
-        <?php endif ?>
+      if (!timer) {
+        startTimer(result ? result.raw_time_taken : <?= isset($answer)&&$answer ?$answer->answered_time : 0 ?>);
       }
     });
 
@@ -134,7 +129,7 @@
       const code = editor.getValue();
       const unitTests = unitTestsEditor.getValue();
 
-      if (!isCodePassed) {
+      if (!isCodePassed && timer) {
         timeTaken = stopTimer(); // Calculate time taken before making the request
       }
 
@@ -168,7 +163,6 @@
           .then(res => res.json())
           .then(res => {
             console.log(res)
-            timeTaken = 0
           }).catch(err => {
             console.log(err)
           })
@@ -197,7 +191,7 @@
             isCodePassed = false;
             clearInterval(timer); // Stop the timer if code is passed
             updateTimeInfo(result.time_taken); // Update time info after code pass
-            startTime = null
+            timer = null
           }
         } else {
           document.getElementById("output").textContent =
@@ -231,9 +225,9 @@
 
     document.querySelector("#save-button").addEventListener('click', async () => {
       const code = editor.getValue();
-
+      if (!confirm('Apakah anda yakin ? jawaban yang telah disimpan tidak akan dapat diubah kembali')) return
       try {
-        
+
         let response = await fetch("{{ route('siswa.course.submit', $data->id) }}", {
           method: "POST",
           headers: {
@@ -250,7 +244,7 @@
           })
         })
         let json = await response.json()
-  
+
         alert(json.message)
         if (response.ok) {
           window.location.href = "{{ route('siswa.course.show', $data->sekolah_course_id) }}"
