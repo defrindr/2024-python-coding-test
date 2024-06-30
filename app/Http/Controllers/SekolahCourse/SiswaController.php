@@ -47,7 +47,9 @@ class SiswaController extends Controller
                 return datatables()->of($data)
                     ->addIndexColumn()
                     ->addColumn('action', function ($row) {
-                        return view('pages.siswa_course.modul.actions', compact('row'));
+                        $sudahMengerjakan = PenilaianModulSiswa::where('siswa_id', Auth::user()->siswa->id)
+                            ->where('modul_id', $row->id)->first();
+                        return view('pages.siswa_course.modul.actions', compact('row', 'sudahMengerjakan'));
                     })
                     ->rawColumns(['action'])
                     ->make(true);

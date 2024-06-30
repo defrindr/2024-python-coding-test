@@ -84,7 +84,8 @@ def run_code():
                 'attempts': attempts,
                 'attempts_to_success': attempts_to_success.get(key, 0),
                 'failed_attempts': failed_attempts.get(key, 0),
-                'time_taken': format_time(time_taken_dict.get(key)) if time_taken_dict.get(key) is not None else None
+                'time_taken': format_time(time_taken_dict.get(key)) if time_taken_dict.get(key) is not None else None,
+                'raw_time_taken': time_taken_dict.get(key) if time_taken_dict.get(key) is not None else None
             })
 
         # Combine code and tests into one file
@@ -107,6 +108,8 @@ def run_code():
                 # Store the time taken for successful attempt only if it is not already stored
                 if time_taken_dict[key] is None and time_taken is not None:
                     time_taken_dict[key] = time_taken
+                else: # increase time taken
+                    time_taken_dict[key] = time_taken
 
             else:
                 failed_attempts[key] += 1
@@ -126,7 +129,8 @@ def run_code():
             'attempts_to_success': attempts_to_success_count,
             'failed_attempts': failed_attempts_count,
             'time_taken': format_time(stored_time_taken) if stored_time_taken is not None else format_time(time_taken) if time_taken is not None else None,
-            'code_passed': result_tests.returncode == 0
+            'code_passed': result_tests.returncode == 0,
+            'raw_time_taken': time_taken_dict.get(key) if time_taken_dict.get(key) is not None else None
         })
 
 @app.route('/get-time-taken', methods=['GET'])

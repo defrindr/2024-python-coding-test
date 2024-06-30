@@ -3,6 +3,14 @@
     Download
   </a>
   <a href="/python-course-siswa/{{ $row->id }}" class="btn btn-success">
-    Mulai Kerjakan
+    @if($sudahMengerjakan)
+      @if($sudahMengerjakan->is_upload_tugas)
+        Lihat Jawabn
+      @else
+        Lanjut Mengerjakan
+      @endif
+    @else
+      Mulai Kerjakan
+    @endif
   </a>
 </div>

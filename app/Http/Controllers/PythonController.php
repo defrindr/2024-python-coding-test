@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Modul;
+use App\Models\PenilaianModulSiswa;
 use Illuminate\Http\Request;
 
 class PythonController extends Controller
@@ -14,8 +15,11 @@ class PythonController extends Controller
     {
 
         $data = Modul::findOrFail($id);
-
-        return view('pages.course_python.course_python', compact('data'));
+        $answer = PenilaianModulSiswa::where('modul_id', $id)->where('siswa_id', auth()->user()->siswa->id)->first();
+        if($answer && $answer->is_upload_tugas) {
+            return view('pages.course_python.course_python_readonly', compact('data','answer'));
+        }
+        return view('pages.course_python.course_python', compact('data','answer'));
     }
 
     /**
