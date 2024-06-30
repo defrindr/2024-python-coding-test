@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Helpers\TimeHelper;
 use App\Models\PenilaianModulSiswa;
+use App\Models\Siswa;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Symfony\Component\HttpKernel\Exception\HttpException;
@@ -79,10 +80,13 @@ class PenilaianModulSiswaController extends Controller
         return datatables()->of($data)
             ->addIndexColumn()
             ->addColumn('namaSiswa', function ($row) {
-                return $row->siswa->user->name;
+                $siswa = Siswa::where('id', $row->siswa_id)->withTrashed()->first();
+                $user = $siswa->user()->withTrashed()->first();
+                return $user->name;
             })
             ->addColumn('kelasSiswa', function ($row) {
-                return $row->siswa->kelas->nama_kelas;
+                $siswa = Siswa::where('id', $row->siswa_id)->withTrashed()->first();
+                return $siswa->kelas->nama_kelas ?? '(user deleted)';
             })
             ->addColumn('courseSiswa', function ($row) {
                 return $row->modul->sekolahCourse->course->name;

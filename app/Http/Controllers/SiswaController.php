@@ -156,6 +156,8 @@ class SiswaController extends Controller
             'nis' => 'required|unique:siswa,nis,' . $siswa->id,
             'sekolah_id' => 'required',
             'kelas_id' => 'required',
+            'password' => 'nullable|min:8|required_with:password_confirmation|same:password_confirmation',
+            'password_confirmation' => 'nullable'
         ]);
 
         if ($validator->fails()) {
@@ -164,10 +166,15 @@ class SiswaController extends Controller
         }
 
         try {
-            $siswa->user->update([
+            $userPayload = [
                 'name' => $request->name,
                 'email' => $request->email,
-            ]);
+            ];
+
+            if ($request->password) {
+                $userPayload['password'] = bcrypt($request->password);
+            }
+            $siswa->user->update($userPayload);
 
             $siswa->update([
                 'sekolah_id' => $request->sekolah_id,
@@ -190,8 +197,8 @@ class SiswaController extends Controller
     public function destroy(Siswa $siswa)
     {
         try {
-            $siswa->delete();
             $siswa->user->delete();
+            $siswa->delete();
             Alert::toast('Data siswa berhasil dihapus', 'success');
             return redirect()->route('siswa.index');
         } catch (\Exception $e) {

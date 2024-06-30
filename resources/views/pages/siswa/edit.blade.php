@@ -46,7 +46,7 @@
                 <label for="password" class="mb-1 control-label">Password</label>
                 <div class="col-sm-12">
                   <input type="password" class="form-control" id="password" name="password" placeholder="Password"
-                    value="{{ old('password') }}" required />
+                    value="{{ old('password') }}" />
                 </div>
               </div>
 
@@ -54,7 +54,7 @@
                 <label for="password_confirmation" class="mb-1 control-label">Konfirmasi Password</label>
                 <div class="col-sm-12">
                   <input type="password" class="form-control" id="password_confirmation" name="password_confirmation"
-                    placeholder="Konfirmasi Password" value="{{ old('password_confirmation') }}" required />
+                    placeholder="Konfirmasi Password" value="{{ old('password_confirmation') }}" />
                 </div>
               </div>
 
@@ -73,13 +73,20 @@
                   </div>
                 </div>
               @else
+              @php
+              if(auth()->user()->role == 'guru') {
+                $user = Auth::user()->guru;
+              } else {
+                $user = Auth::user()->admin;
+              }
+              @endphp
                 {{-- text readonly current sekolah name and hidden sekolah id --}}
-                <input type="hidden" name="sekolah_id" value="{{ Auth::user()->admin->sekolah_id }}">
+                <input type="hidden" name="sekolah_id" value="{{ $user->sekolah_id }}">
                 <div class="form-group">
                   <label for="sekolah" class="mb-1 control-label">Asal Sekolah</label>
                   <div class="col-sm-12">
                     <input type="text" class="form-control" id="sekolah"
-                      value="{{ Auth::user()->admin->sekolah->nama }}" readonly />
+                      value="{{ $user->sekolah->nama }}" readonly />
                   </div>
                 </div>
               @endif
