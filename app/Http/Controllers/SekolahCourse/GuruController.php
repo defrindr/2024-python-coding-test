@@ -5,7 +5,10 @@ namespace App\Http\Controllers\SekolahCourse;
 use App\Http\Controllers\Controller;
 use App\Models\Course;
 use App\Models\Modul;
+use App\Models\PenilaianModulSiswa;
 use App\Models\SekolahCourse;
+use App\Models\Siswa;
+use ArielMejiaDev\LarapexCharts\LarapexChart;
 use GuzzleHttp\Psr7\Response;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -53,7 +56,14 @@ class GuruController extends Controller
                     ->rawColumns(['action'])
                     ->make(true);
             }
-            return view('pages.guru_course.show', compact('sekolahCourse'));
+
+            $pesertaMengerjakan = PenilaianModulSiswa::
+                whereIn('siswa_id', Siswa::where('sekolah_id', $sekolahCourse->sekolah->id)->whereNull('deleted_at')->select('id'))
+                ->whereIn('modul_id', Modul::where('sekolah_course_id', $sekolahCourse->id)->select('id'))->count();
+            $totalPeserta = $sekolahCourse->sekolah->siswa()->count();
+            $data = [$pesertaMengerjakan, $totalPeserta - $pesertaMengerjakan];
+
+            return view('pages.guru_course.show', compact('sekolahCourse', 'data'));
         } catch (\Throwable $th) {
             Alert::error('Error', $th->getMessage());
             return redirect()->back()->withInput();
@@ -79,7 +89,7 @@ class GuruController extends Controller
         }
     }
 
-    public function editKunciJawaban(String $id)
+    public function editKunciJawaban(string $id)
     {
         try {
 
@@ -91,7 +101,7 @@ class GuruController extends Controller
         }
     }
 
-    public function updateKunciJawaban(Request $request, String $id)
+    public function updateKunciJawaban(Request $request, string $id)
     {
         try {
             $modul = Modul::findOrFail($id);

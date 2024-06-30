@@ -8,7 +8,7 @@
 </div>
 <div class="content-wrapper">
   <div class="row same-height">
-    <div class="col-md-12">
+    <div class="col-md-8">
       <div class="card">
         <div class="card-body">
           <div class="d-flex flex-column gap-3 table-responsive">
@@ -53,6 +53,13 @@
             </table>
 
           </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="card card-default">
+        <div class="card-body">
+          <canvas id="chart"></canvas>
         </div>
       </div>
     </div>
@@ -111,7 +118,30 @@
     </div>
   </div>
 </div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script type="text/javascript">
+  const ctx = document.getElementById('chart');
+
+  new Chart(ctx, {
+    type: 'doughnut',
+    data: {
+      labels: ['Sudah mengerjakan', 'Belum mengerjakan'],
+
+      datasets: [{
+        data: {{ json_encode($data ?? [0, 0]) }},
+      }],
+
+    },
+    options: {
+      scales: {
+        y: {
+          beginAtZero: true
+        }
+      }
+    }
+  });
+
   $(function () {
     var myModal = new bootstrap.Modal(document.querySelector('.modal'), {
       keyboard: false

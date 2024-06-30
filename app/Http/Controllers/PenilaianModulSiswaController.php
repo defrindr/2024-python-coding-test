@@ -76,7 +76,9 @@ class PenilaianModulSiswaController extends Controller
 
     public function listJawaban(Request $request, SekolahCourse $sekolahCourse)
     {
-        $data = PenilaianModulSiswa::whereIn('modul_id', $sekolahCourse->modul()->select('id'))->get();
+        $data = PenilaianModulSiswa::
+            whereIn('siswa_id', Siswa::where('sekolah_id', $sekolahCourse->sekolah->id)->whereNull('deleted_at')->select('id'))->
+            whereIn('modul_id', $sekolahCourse->modul()->select('id'))->get();
         return datatables()->of($data)
             ->addIndexColumn()
             ->addColumn('namaSiswa', function ($row) {

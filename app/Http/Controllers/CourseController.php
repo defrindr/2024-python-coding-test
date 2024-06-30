@@ -97,7 +97,26 @@ class CourseController extends Controller
      */
     public function show(Course $course)
     {
-        //
+        $model = \DB::select("select year(penilaian_modul_siswa.created_at) as tahun, sum(case when penilaian_modul_siswa.id is not null then 1 else 0 end) as peserta from courses 
+inner join sekolah_course on sekolah_course.course_id=courses.id
+inner join modul on modul.sekolah_course_id=sekolah_course.id
+inner join penilaian_modul_siswa on penilaian_modul_siswa.modul_id=modul.id
+where courses.id = ?
+group by year(penilaian_modul_siswa.created_at)", [$course->id]);
+
+        $modelArr = [];
+
+        foreach ($model as $item)
+            $modelArr[$item->tahun] = $item->peserta;
+
+        $labels = [];
+        $data = [];
+        for ($i = date('Y') - 5; $i <= date('Y'); $i++) {
+            $labels[] = $i;
+            $data[] = isset($modelArr[$i]) ? $modelArr[$i] : 0;
+        }
+
+        return view('pages.course.show', compact('course', 'labels', 'data'));
     }
 
     /**
