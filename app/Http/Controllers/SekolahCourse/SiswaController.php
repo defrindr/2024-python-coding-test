@@ -55,19 +55,22 @@ class SiswaController extends Controller
                     ->make(true);
             }
 
-            $penilaianModulSiswa = PenilaianModulSiswa::where('siswa_id', Auth::user()->siswa->id);
-            $nilaiUpload = $penilaianModulSiswa->pluck('is_upload_tugas')->toArray();
-            $labels = $sekolahCourse->modul->pluck('nama')->toArray();
-
+            // $penilaianModulSiswa = PenilaianModulSiswa::where('siswa_id', Auth::user()->siswa->id);
+            // $nilaiUpload = $penilaianModulSiswa->select('point')->toArray();
+            $modelLabels = $sekolahCourse->modul()->select('id', 'nama')->get();
+            $labels = [];
             $dataset = [];
-            foreach ($labels as $label) {
+            $penilaianModulSiswa = PenilaianModulSiswa::where('siswa_id', Auth::user()->siswa->id);
+            foreach ($modelLabels as $index => $label) {
                 $total = 0;
-                $index = array_search($label, $labels);
-                if (isset($nilaiUpload[$index])) {
-                    $total += $nilaiUpload[$index];
+                $data = $penilaianModulSiswa->where('modul_id', $label->id)->select('point')->first();
+                if ($data) {
+                    $total = $data->point ?? 0;
                 }
+
+                $labels[] = $label->nama;
                 $dataset[] = [
-                    'name' => $label,
+                    'name' => $label->nama,
                     'data' => $total
                 ];
             }
