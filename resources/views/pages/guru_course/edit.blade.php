@@ -72,6 +72,11 @@
                             name="file[{{ $loop->parent->index }}][{{ $loop->index }}]">
                           <input type="hidden" name="modul_id[{{ $loop->parent->index }}][{{ $loop->index }}]"
                             value="{{ $file->id }}">
+                            @if($file)
+                            <a href="{{ route('guru.modul.atur-nilai', $file) }}" class="btn btn-primary">
+                              <i class="ti-eye"></i>
+                            </a>
+                            @endif
                           <button type="button" class="btn btn-info col-md-1 col-12 update-modul">
                             <i class="ti-save"></i>
                           </button>

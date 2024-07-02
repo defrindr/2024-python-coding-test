@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Helpers\PenilaianHelper;
 use App\Helpers\TimeHelper;
 use App\Models\PenilaianModulSiswa;
 use App\Models\Siswa;
@@ -66,9 +67,10 @@ class PenilaianModulSiswaController extends Controller
         $payloads['is_upload_tugas'] = 1;
 
         $data = PenilaianModulSiswa::where('modul_id', $modulId)->where('siswa_id', auth()->user()->siswa->id)->first();
-        if ($data)
+        if ($data) {
             $data->update($payloads);
-        else
+            PenilaianHelper::HitungNilai($data->id);
+        } else
             PenilaianModulSiswa::create($payloads);
 
         return response()->json(['message' => 'Berhasil menyimpan jawaban']);

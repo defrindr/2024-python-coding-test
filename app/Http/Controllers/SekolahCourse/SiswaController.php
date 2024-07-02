@@ -60,10 +60,10 @@ class SiswaController extends Controller
             $modelLabels = $sekolahCourse->modul()->select('id', 'nama')->get();
             $labels = [];
             $dataset = [];
-            $penilaianModulSiswa = PenilaianModulSiswa::where('siswa_id', Auth::user()->siswa->id);
             foreach ($modelLabels as $index => $label) {
                 $total = 0;
-                $data = $penilaianModulSiswa->where('modul_id', $label->id)->select('point')->first();
+                $data = PenilaianModulSiswa::where('siswa_id', Auth::user()->siswa->id)->where('modul_id', $label->id)->select('point')->first();
+                // var_dump($data);
                 if ($data) {
                     $total = $data->point ?? 0;
                 }
@@ -74,6 +74,7 @@ class SiswaController extends Controller
                     'data' => $total
                 ];
             }
+            // die;
 
             $chart = (new LarapexChart)->barChart()->setTitle('Penilaian Modul Siswa')
                 ->setDataset([

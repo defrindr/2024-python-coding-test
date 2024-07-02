@@ -25,6 +25,9 @@ Route::middleware(['auth', 'role:guru'])->group(function () {
     Route::get('/guru/course/{sekolahCourse}/edit', [GuruController::class, 'edit'])->name('guru.course.edit');
     Route::patch('/guru/course/{sekolahCourse}', [GuruController::class, 'update'])->name('guru.course.update');
     Route::put('/python-jawaban/{id}', [GuruController::class, 'updateKunciJawaban']);
+    
+    Route::get('/guru/modul/{modul}', [GuruController::class, 'aturNilai'])->name('guru.modul.atur-nilai');
+    Route::post('/guru/modul/{modul}', [GuruController::class, 'simpanNilai'])->name('guru.modul.simpan-nilai');
 
     Route::get('/guru/course/{sekolahCourse}/list-jawaban', [PenilaianModulSiswaController::class, 'listJawaban'])->name('guru.course.list-jawaban');
     Route::get('/guru/penilaian/{penilaian}/jawaban', [PenilaianModulSiswaController::class, 'detail'])->name('guru.course.penilaian.detail');

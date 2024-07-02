@@ -5,6 +5,7 @@ namespace App\Http\Controllers\SekolahCourse;
 use App\Http\Controllers\Controller;
 use App\Models\Course;
 use App\Models\Modul;
+use App\Models\Nilai;
 use App\Models\PenilaianModulSiswa;
 use App\Models\SekolahCourse;
 use App\Models\Siswa;
@@ -143,12 +144,39 @@ class GuruController extends Controller
                         $file = $request->file("file.$key.$j");
                         $file_name = "Pertemuan-$index" . '_' . $file->getClientOriginalName();
                         $file_path = $file->storeAs('public/modul', $file_name);
-                        Modul::create([
+                        $modul = Modul::create([
                             'nama' => $file_name,
                             'file_path' => $file_path,
                             'sekolah_course_id' => $sekolahCourse->id,
                             'pertemuan' => $index
                         ]);
+
+                        $tipeAttempt = Nilai::where('modul_id', $modul->id)->where('tipe', Nilai::TYPE_ATTEMPT)->get();
+                        $tipeWaktu = Nilai::where('modul_id', $modul->id)->where('tipe', Nilai::TYPE_WAKTU)->get();
+
+                        if (count($tipeWaktu) == 0) {
+                            $values = [[10, 100], [20, 80], [25, 70], [30, 60], [40, 50]];
+                            foreach ($values as $value)
+                                Nilai::create([
+                                    'modul_id' => $modul->id,
+                                    'tipe' => Nilai::TYPE_WAKTU,
+                                    'min_value' => $value[0],
+                                    'point' => $value[1]
+                                ]);
+                            $tipeWaktu = Nilai::where('modul_id', $modul->id)->where('tipe', Nilai::TYPE_WAKTU)->get();
+                        }
+
+                        if (count($tipeAttempt) == 0) {
+                            $values = [[3, 100], [5, 80], [7, 70], [9, 60], [11, 50]];
+                            foreach ($values as $value)
+                                Nilai::create([
+                                    'modul_id' => $modul->id,
+                                    'tipe' => Nilai::TYPE_ATTEMPT,
+                                    'min_value' => $value[0],
+                                    'point' => $value[1]
+                                ]);
+                            $tipeAttempt = Nilai::where('modul_id', $modul->id)->where('tipe', Nilai::TYPE_ATTEMPT)->get();
+                        }
                     }
                 }
             }
@@ -159,5 +187,96 @@ class GuruController extends Controller
             Alert::error('Error', $th->getMessage());
             return redirect()->back()->withInput();
         }
+    }
+
+
+    public function aturNilai(Modul $modul)
+    {
+        $tipeAttempt = Nilai::where('modul_id', $modul->id)->where('tipe', Nilai::TYPE_ATTEMPT)->get();
+        $tipeWaktu = Nilai::where('modul_id', $modul->id)->where('tipe', Nilai::TYPE_WAKTU)->get();
+
+        if (count($tipeWaktu) == 0) {
+            $values = [[10, 100], [20, 80], [25, 70], [30, 60], [40, 50]];
+            foreach ($values as $value)
+                Nilai::create([
+                    'modul_id' => $modul->id,
+                    'tipe' => Nilai::TYPE_WAKTU,
+                    'min_value' => $value[0],
+                    'point' => $value[1]
+                ]);
+            $tipeWaktu = Nilai::where('modul_id', $modul->id)->where('tipe', Nilai::TYPE_WAKTU)->get();
+        }
+
+        if (count($tipeAttempt) == 0) {
+            $values = [[3, 100], [5, 80], [7, 70], [9, 60], [11, 50]];
+            foreach ($values as $value)
+                Nilai::create([
+                    'modul_id' => $modul->id,
+                    'tipe' => Nilai::TYPE_ATTEMPT,
+                    'min_value' => $value[0],
+                    'point' => $value[1]
+                ]);
+            $tipeAttempt = Nilai::where('modul_id', $modul->id)->where('tipe', Nilai::TYPE_ATTEMPT)->get();
+        }
+
+
+        return view('pages.guru_course.nilai', compact('modul', 'tipeAttempt', 'tipeWaktu'));
+    }
+
+    public function simpanNilai(Modul $modul, Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'waktu_min.*' => 'required',
+            'waktu_point.*' => 'required',
+            'attempt_min.*' => 'required',
+            'attempt_point.*' => 'required'
+        ]);
+
+        if ($validator->fails()) {
+            Alert::error('Error', $validator->messages()->first());
+            return redirect()->back()->withInput();
+        }
+
+        if ($request->has('waktu_hidden')) {
+            foreach ($request->get('waktu_hidden') as $index => $waktu) {
+                $data = Nilai::where('modul_id', $modul->id)->where('tipe', Nilai::TYPE_WAKTU)->where('id', $waktu)->first();
+
+                $data->update([
+                    'min_value' => $request->get('waktu_min')[$index],
+                    'point' => $request->get('waktu_point')[$index]
+                ]);
+            }
+        } else {
+            foreach ($request->get('waktu_min') as $index => $waktu) {
+                Nilai::create([
+                    'modul_id' => $modul->id,
+                    'tipe' => Nilai::TYPE_WAKTU,
+                    'min_value' => $request->get('waktu_min')[$index],
+                    'point' => $request->get('waktu_point')[$index]
+                ]);
+            }
+        }
+
+        if ($request->has('attempt_hidden')) {
+            foreach ($request->get('attempt_hidden') as $index => $attempt) {
+                $data = Nilai::where('modul_id', $modul->id)->where('tipe', Nilai::TYPE_ATTEMPT)->where('id', $attempt)->first();
+
+                $data->update([
+                    'min_value' => $request->get('attempt_min')[$index],
+                    'point' => $request->get('attempt_point')[$index]
+                ]);
+            }
+        } else {
+            foreach ($request->get('attempt_min') as $index => $attempt) {
+                Nilai::create([
+                    'modul_id' => $modul->id,
+                    'tipe' => Nilai::TYPE_ATTEMPT,
+                    'min_value' => $request->get('attempt_min')[$index],
+                    'point' => $request->get('attempt_point')[$index]
+                ]);
+            }
+        }
+
+        return redirect()->back();
     }
 }
