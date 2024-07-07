@@ -44,7 +44,20 @@ class SiswaController extends Controller
 
             $data = $sekolahCourse->modul->load('sekolahCourse.course');
             if (request()->ajax()) {
-                return datatables()->of($data)
+                $querySudahDikerjakan = PenilaianModulSiswa::where('siswa_id', Auth::user()->siswa->id)->where('is_upload_tugas', 1)->select('modul_id');
+                $firstNext = $sekolahCourse->modul()->whereNotIn(
+                    'id',
+                    $querySudahDikerjakan
+                )->first();
+                $data = $sekolahCourse->modul()->whereIn(
+                    'id',
+                    $querySudahDikerjakan
+                );
+
+                if ($firstNext) {
+                    $data->orWhere('id', $firstNext->id);
+                }
+                return datatables()->of($data->get())
                     ->addIndexColumn()
                     ->addColumn('action', function ($row) {
                         $sudahMengerjakan = PenilaianModulSiswa::where('siswa_id', Auth::user()->siswa->id)
@@ -55,6 +68,10 @@ class SiswaController extends Controller
                     ->make(true);
             }
 
+            if ($sekolahCourse->modul()->count() == 0) {
+                Alert::toast('Modul belum siap', 'warning');
+            }
+
             // $penilaianModulSiswa = PenilaianModulSiswa::where('siswa_id', Auth::user()->siswa->id);
             // $nilaiUpload = $penilaianModulSiswa->select('point')->toArray();
             $modelLabels = $sekolahCourse->modul()->select('id', 'nama')->get();
@@ -63,7 +80,6 @@ class SiswaController extends Controller
             foreach ($modelLabels as $index => $label) {
                 $total = 0;
                 $data = PenilaianModulSiswa::where('siswa_id', Auth::user()->siswa->id)->where('modul_id', $label->id)->select('point')->first();
-                // var_dump($data);
                 if ($data) {
                     $total = $data->point ?? 0;
                 }
@@ -76,7 +92,7 @@ class SiswaController extends Controller
             }
             // die;
 
-            $chart = (new LarapexChart)->barChart()->setTitle('Penilaian Modul Siswa')
+            $chart = (new LarapexChart)->lineChart()->setTitle('Penilaian Modul Siswa')
                 ->setDataset([
                     [
                         'name' => 'Progress Modul',
