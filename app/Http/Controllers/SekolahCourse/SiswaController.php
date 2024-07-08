@@ -102,6 +102,8 @@ class SiswaController extends Controller
                 ])
                 ->setLabels($labels)
                 ->setColors(['#2C50EF'])
+                ->setSparkline()
+                ->setMarkers()
                 ->setHeight(400)
                 ->setWidth(1152);
 
