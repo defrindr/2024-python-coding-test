@@ -19,7 +19,7 @@
 </head>
 
 <body
-  style="bacground-size: cover;background-position: left;background-image: url(https://images.unsplash.com/photo-1621349489252-007cfa5e0890?q=80&w=1909&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D)">
+  style="bacground-size: contain;background-position: left;background-image: url(https://images.unsplash.com/reserve/aOcWqRTfQ12uwr3wWevA_14401305508_804b300054_o.jpg)">
   @include('sweetalert::alert')
   <script src="{{ asset('vendor/jquery/jquery.min.js') }}"></script>
   <main class="container h-100">
